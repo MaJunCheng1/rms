@@ -1,5 +1,20 @@
 package com.ma.rms.biz;
 
-public interface menuBiz {
+import java.util.List;
 
+import com.ma.rms.domain.menu;
+
+public interface menuBiz {
+	//根据meid查找该菜的信息
+	menu selectFoodById(int meid);
+	//查找所有菜的信息
+	List<menu> selectAllFood();
+	//增加菜品信息
+	String addFood(menu me);
+	//删除菜品
+	String removeFood(int meid);
+	//修改菜品信息
+	String changeFood(int meid,String mename,double meprice,int typeid,String ifspecials);
+	//通过typeid查找菜品信息
+	List<menu> selectFood(int typeid);
 }
