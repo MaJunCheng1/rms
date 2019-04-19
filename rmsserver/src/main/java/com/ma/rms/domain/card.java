@@ -1,11 +1,11 @@
 package com.ma.rms.domain;
 
 public class card {
-	private int carid;
-	private int eid;
-	private int payid;
-	private String status;
-	private double balance;
+	private int carid;	//卡号
+	private int eid;    //employid
+	private int payid;	//支付类型号
+	private String status;  //状态
+	private double balance;	//余额
 	public card(int carid, int eid, int payid, double balance, String status) {
 		super();
 		this.carid = carid;

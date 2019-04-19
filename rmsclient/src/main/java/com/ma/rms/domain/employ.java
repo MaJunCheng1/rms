@@ -1,8 +1,8 @@
 package com.ma.rms.domain;
 
 public class employ {
-	private int eid;
-	private String ename;
+	private int eid; //员工id
+	private String ename;	
 	private String accout;
 	private String password;
 	private String jobtype;

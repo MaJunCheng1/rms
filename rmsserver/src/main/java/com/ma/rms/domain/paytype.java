@@ -1,9 +1,9 @@
 package com.ma.rms.domain;
-
+//需不需要待定
 public class paytype {
-	private int payid;
-	private String payname;
-	private double discount;
+	private int payid; //支付类型号
+	private String payname; //支付名字
+	private double discount; //优惠额度
 	public paytype() {
 		super();
 	}

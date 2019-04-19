@@ -1,8 +1,8 @@
 package com.ma.rms.domain;
 
 public class locate {
-	private int locid;
-	private String locname;
+	private int locid; //所在地编号
+	private String locname; //所在地名称
 	public locate() {
 		super();
 	}

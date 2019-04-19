@@ -3,11 +3,11 @@ package com.ma.rms.domain;
 import java.util.Date;
 
 public class orders {
-	private String orid;
-	private Date ortime;
-	private int eid;
-	private int carid;
-	private int locid;
+	private String orid;  //订单号
+	private Date ortime;	//订单时间
+	private int eid;	  //员工号
+	private int carid;   //卡号
+	private int locid;   //地址号
 	public String getOrid() {
 		return orid;
 	}

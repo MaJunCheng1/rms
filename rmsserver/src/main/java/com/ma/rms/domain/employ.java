@@ -1,12 +1,12 @@
 package com.ma.rms.domain;
 
 public class employ {
-	private int eid;
-	private String ename;
-	private String accout;
-	private String password;
-	private String jobtype;
-	private String sex;
+	private int eid; //员工号
+	private String ename; //员工姓名
+	private String accout; //账号
+	private String password; //密码
+	private String jobtype; //职位
+	private String sex; //性别
 	public employ() {
 		super();
 	}
