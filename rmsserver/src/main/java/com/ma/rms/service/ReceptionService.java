@@ -42,6 +42,10 @@ public interface ReceptionService {
 	List<orderitem> selectitem(String orid);
 	// 通过orid和meid找订单项
 	orderitem selectOrderByoridandmeid(String orid, int meid);
+	//查询所有订单项
+	List<orderitem> selectAllitem();
+	//用meid进行分类查找每个菜的数量
+	List<orderitem> selectSumNum();
 
 	// 根据地址编号查找地址
 	locate selectLocateById(int locid);

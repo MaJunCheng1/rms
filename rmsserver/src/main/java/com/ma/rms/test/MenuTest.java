@@ -9,7 +9,7 @@ import com.ma.rms.dao.impl.menuDaoImpl;
 import com.ma.rms.domain.menu;
 import com.ma.rms.domain.vegetType;
 
-public class MyTest {
+public class MenuTest {
 //	@Test
 	public void  findFoodById() {
 		menuDao me=new menuDaoImpl();

@@ -17,4 +17,8 @@ public interface orderitemBiz {
 	List<orderitem> finditem(String orid);
 	// 通过orid和meid找订单项
 	orderitem findOrderByoridandmeid(String orid, int meid);
+	//查询所有订单项
+	List<orderitem> findAllitem();
+	//用meid进行分类查找每个菜的数量
+	List<orderitem> findSumNum();
 }

@@ -9,7 +9,7 @@ import com.ma.rms.dao.ordersDao;
 import com.ma.rms.dao.impl.ordersDaoImpl;
 import com.ma.rms.domain.orders;
 
-public class MyTest6 {
+public class OrdersTest {
 //	@Test
 	public void insertOrders() {
 		ordersDao od=new ordersDaoImpl();

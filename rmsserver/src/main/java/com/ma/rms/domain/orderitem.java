@@ -16,6 +16,13 @@ public class orderitem implements Serializable{
 		this.meid = meid;
 		this.num = num;
 	}
+	
+	public orderitem(int meid, double num) {
+		super();
+		this.meid = meid;
+		this.num = num;
+	}
+
 	public orderitem() {
 		super();
 	}

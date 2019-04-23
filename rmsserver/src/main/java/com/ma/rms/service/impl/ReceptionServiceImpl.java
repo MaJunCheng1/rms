@@ -89,6 +89,14 @@ public class ReceptionServiceImpl implements ReceptionService{
 	public orderitem selectOrderByoridandmeid(String orid, int meid) {
 		return oib.findOrderByoridandmeid(orid, meid);
 	}
+	//查询所有订单项
+	public List<orderitem> selectAllitem(){
+		return oib.findAllitem();
+	}
+	//用meid进行分类查找每个菜的数量
+	public List<orderitem> selectSumNum(){
+		return oib.findSumNum();
+	}
 
 	public locate selectLocateById(int locid) {
 		return lb.findLocate(locid);

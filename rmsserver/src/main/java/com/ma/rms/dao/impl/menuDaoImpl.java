@@ -33,7 +33,7 @@ public class menuDaoImpl implements menuDao{
 	public List<menu> findAllFood() {
 		List<menu> list=new ArrayList<menu>();
 		db=new DBUtil();
-		String sql="select * from menu";
+		String sql="select * from menu order by meid";
 		try {
 			ResultSet res = db.qurey(sql);
 			while(res.next()) {

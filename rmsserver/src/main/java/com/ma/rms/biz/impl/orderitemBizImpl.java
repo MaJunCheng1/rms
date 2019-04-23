@@ -38,5 +38,13 @@ public class orderitemBizImpl implements orderitemBiz {
 	public orderitem findOrderByoridandmeid(String orid, int meid) {
 		return od.selectOrderByoridandmeid(orid, meid);
 	}
-
+	
+	//查询所有订单项
+	public List<orderitem> findAllitem(){
+		return od.selectAllitem();
+	}
+	//用meid进行分类查找每个菜的数量
+	public List<orderitem> findSumNum(){
+		return od.selectSumNum();
+	}
 }

@@ -8,7 +8,7 @@ import com.ma.rms.dao.orderitemDao;
 import com.ma.rms.dao.impl.orderitemDaoImpl;
 import com.ma.rms.domain.orderitem;
 
-public class MyTest5 {
+public class OrderitemTest {
 //	@Test
 	public void addOrderitem() {
 		orderitemDao od=new orderitemDaoImpl();
@@ -41,10 +41,14 @@ public class MyTest5 {
 			System.out.println(o.getOrid()+o.getNum()+o.getMeid());
 		}
 	}
-//	@Test
+	@Test
 	public void selectOrderByoridandmeid() {
 		orderitemDao od=new orderitemDaoImpl();
-		 orderitem o = od.selectOrderByoridandmeid("ba14d6e472454deebb0f01f4cce300d0", 1);
-		 System.out.println(o.getMeid());
+		 orderitem o = od.selectOrderByoridandmeid("eb5488a94c264dc18e5751be99befb", 1);
+		 if(o==null) {
+			 System.out.println("该菜品为空");
+		 }else {
+			 System.out.println(o.getMeid());
+		 }
 	}
 }

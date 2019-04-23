@@ -6,7 +6,7 @@ import com.ma.rms.dao.cardDao;
 import com.ma.rms.dao.impl.cardDaoImpl;
 import com.ma.rms.domain.card;
 
-public class MyTest2 {
+public class CardTest {
 //	@Test
 	public void insertCard() {
 		cardDao cd=new cardDaoImpl();

@@ -8,7 +8,7 @@ import com.ma.rms.dao.empDao;
 import com.ma.rms.dao.impl.empDaoImpl;
 import com.ma.rms.domain.employ;
 
-public class MyTest3 {
+public class EmpTest {
 //	@Test
 	public void insertEmp() {
 		empDao ed=new empDaoImpl();

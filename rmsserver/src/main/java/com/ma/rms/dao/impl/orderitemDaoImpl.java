@@ -105,6 +105,43 @@ public class orderitemDaoImpl implements orderitemDao {
 		
 	}
 	
+	//查询所有订单项
+	public List<orderitem> selectAllitem(){
+		List<orderitem> list=new ArrayList<orderitem>();
+		db=new DBUtil();
+		String sql="select * from orderitem";
+		try {
+			ResultSet res = db.qurey(sql);
+			while(res.next()) {
+				list.add(new orderitem(res.getString("orid"), res.getInt("meid"), res.getDouble("num")));
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}finally {
+			db.closed();
+		}
+	}
 	
+	//用meid进行分类查找每个菜的数量
+	public List<orderitem> selectSumNum(){
+		List<orderitem> list=new ArrayList<orderitem>();
+		db=new DBUtil();
+		String sql="select meid,sum(num) from orderitem group by meid order by sum(num) desc";
+		try {
+			ResultSet res = db.qurey(sql);
+			while(res.next()) {
+				list.add(new orderitem(res.getInt("meid"), res.getDouble("sum(num)")));
+			}
+			return list;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}finally {
+			db.closed();
+		}
+	}
 
 }

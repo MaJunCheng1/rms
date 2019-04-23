@@ -6,13 +6,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import org.junit.Test;
+
 import com.ma.rms.domain.card;
 import com.ma.rms.domain.employ;
 import com.ma.rms.domain.locate;
 import com.ma.rms.domain.menu;
 import com.ma.rms.domain.orderitem;
 import com.ma.rms.domain.orders;
-import com.ma.rms.domain.shopcar;
 import com.ma.rms.domain.vegetType;
 //import com.ma.rms.service.BackstageService;
 import com.ma.rms.service.ReceptionService;
@@ -24,10 +25,10 @@ public class Control {
 	private UserInput ui;
 	private View v;
 	private static final String IP = "10.10.49.167";
-//	private static final String IP = "localhost";
+	//	private static final String IP = "localhost";
 	private static final int PORT = 5555;
 	private ReceptionService rs;
-//	private BackstageService bs;
+	//	private BackstageService bs;
 
 	private employ emp;
 	private String orid;
@@ -39,7 +40,7 @@ public class Control {
 		this.v = new View();
 		// 创建代理对象
 		rs = ProxyClient.getClient(ReceptionService.class, IP, PORT);
-//		bs = ProxyClient.getClient(BackstageService.class, IP, PORT);
+		//		bs = ProxyClient.getClient(BackstageService.class, IP, PORT);
 	}
 
 	public void start() {
@@ -70,7 +71,10 @@ public class Control {
 					} else if (select == 5) {
 						deposit();
 						v.println("");
-					} else {
+					}else if(select == 0) {
+						v.println("欢迎本次使用");
+						System.exit(0);
+					}else {
 						System.out.println("输入有误!!!!");
 						v.println("");
 					}
@@ -90,6 +94,13 @@ public class Control {
 						this.coldCard();
 					}else if(select==5){
 						this.vegeManage();
+					}else if(select==6) {
+						showMSalesVolume();
+					}else if(select==7) {
+						mostFood();
+					}else if(select==0) {
+						v.println("欢迎本次使用");
+						System.exit(0);
 					}else{
 						System.err.println("请输入有效的选项！！！");
 					}
@@ -105,7 +116,7 @@ public class Control {
 		Date d = new Date();
 		carid = ui.getInt("请输入卡号：");
 		rs.addOrders(new orders(uid, d, emp.getEid(), carid, ui.getInt("请输入地址编号：")));
-//		String ortime = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		//		String ortime = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 		List<menu> list = rs.selectAllFood();
 		v.println(" ");
 		v.println("所有菜品如下：");
@@ -115,57 +126,74 @@ public class Control {
 			System.out.println(m.getMeid() + "\t" + m.getMename() + "\t" + m.getMeprice() + "\t" + s);
 		}
 		v.println("");
-		while (true) {
+		one: while (true) {
 			v.emone();
-			int select2 = ui.getInt("请选择：");
-			if (select2 == 1) {
-				int meid = ui.getInt("请选择菜品编号：");
-				menu me = rs.selectFoodById(meid);
-				if (me == null) {
-					System.out.println("没有该编号");
+			while(true) {
+				int select2 = ui.getInt("请选择：");
+				if (select2 == 1) {
+					int meid = ui.getInt("请选择菜品编号：");
+					menu me = rs.selectFoodById(meid);
+					if (me == null) {
+						System.out.println("没有该编号");
+						break;
+					}
+					double num = ui.getDouble("请输入你要的份数：");
+					rs.addOrderitem(new orderitem(uid, meid, num));
 					break;
-				}
-				double num = ui.getDouble("请输入你要的份数：");
-				rs.addOrderitem(new orderitem(uid, meid, num));
-			} else if (select2 == 2) {
-				int id = ui.getInt("请输入你要删除的菜品编号：");
-				double num2 = ui.getDouble("请输入份数：");
-				orderitem oi = rs.selectOrderByoridandmeid(uid, id);
-				if ((oi.getNum() - num2) > 0) {
-					rs.updateOrderitem(uid, num2);
-				} else {
-					rs.deleteOneOrderitem(uid, id);
-				}
-			} else if (select2 == 3) {
-				List<orderitem> list2 = rs.selectitem(uid);
-				System.out.println("编号\t名称\t价格\t数量");
-				for (orderitem oi : list2) {
-					menu me = rs.selectFoodById(oi.getMeid());
-					System.out.println(oi.getMeid()+"\t"+me.getMename()+"\t"+me.getMeprice()+"\t"+oi.getNum());
+				} else if (select2 == 2) {
+					int id = ui.getInt("请输入你要删除的菜品编号：");
+					double num2 = ui.getDouble("请输入份数：");
+					orderitem oi = rs.selectOrderByoridandmeid(uid, id);
+					if(oi==null) {
+						v.println("购物车里没有该菜品!");
+					}else {
+						if ((oi.getNum() - num2) > 0) {
+							rs.updateOrderitem(uid, num2);
+						} else {
+							rs.deleteOneOrderitem(uid, id);
+						}
+						v.println("删除成功");
+					}
+					break;
+				} else if (select2 == 3) {
+					List<orderitem> list2 = rs.selectitem(uid);
+					System.out.println("编号\t名称\t价格\t数量");
+					for (orderitem oi : list2) {
+						menu me = rs.selectFoodById(oi.getMeid());
+						System.out.println(oi.getMeid()+"\t"+me.getMename()+"\t"+me.getMeprice()+"\t"+oi.getNum());
+					}
+					break;
+				}else {
+					v.println("输入有误!");
 				}
 			}
 			v.println("1.继续点菜");
 			v.println("2.提交订单");
 			v.println("3.取消订单");
-			int select3 = ui.getInt("请选择：");
-			if (select3 == 1) {
-			} else if (select3 == 2) {
-				checkout();
-				break;
-			} else if (select3 == 3) {
-				System.out.println("已取消订单");
-//				rs.deleteOrderitem(uid);
-				rs.deleteOrders(uid);
-				return;
-			} else {
-				System.out.println("输入有误");
+			while(true) {
+				int select3 = ui.getInt("请选择：");
+				if (select3 == 1) {
+					break;
+				} else if (select3 == 2) {
+					checkout();
+					break one;
+				} else if (select3 == 3) {
+					System.out.println("已取消订单");
+					//rs.deleteOrderitem(uid);
+					rs.deleteOrders(uid);
+					return;
+				} else {
+					System.out.println("输入有误");
+					break;
+				}
 			}
+
 		}
 
 	}
-
 	// 结账的功能
 	public void checkout() {
+		@SuppressWarnings("unused")
 		String payname;
 		List<orderitem> list = rs.selectitem(orid);
 		orders or = rs.selectOrdersById(orid);
@@ -202,13 +230,18 @@ public class Control {
 						payname = "普通会员";
 						actual = sum * 0.9;
 					}
+					if((c.getBalance()-actual)<0) {
+						v.println("您的余额不足,请用现金支付!");
+					}else {
+						// 修改余额
+						rs.updateCard(carid, actual);
+					}
 					break;
 				}
 			} else {
 				System.out.println("输入有误");
 			}
 		}
-
 		// 打印小票啦
 		v.println("");
 		v.println("\t\t亚惠餐厅");
@@ -232,8 +265,6 @@ public class Control {
 						+ me.getMeprice() * oi.getNum());
 			}
 		}
-		// 修改余额
-		rs.updateCard(carid, actual);
 		v.println("----------------------------------------");
 		v.println("(***打印副本***)");
 		v.println("----------------------------------------");
@@ -243,7 +274,6 @@ public class Control {
 		v.println("");
 		v.println("----------------------------------------");
 	}
-
 	// 开卡的功能
 	public void opencard() {
 		int i = ui.getInt("请输入卡号：");
@@ -254,7 +284,6 @@ public class Control {
 			System.out.println( rs.openCard(new card(i, emp.getEid(), ui.getInt("请输入卡的类型(1.超级会员，2普通会员)："), 0, "活跃")));
 		}
 	}
-
 	// 挂失的功能
 	public void loss() {
 		int carid = ui.getInt("请输入卡号：");
@@ -269,7 +298,6 @@ public class Control {
 			}
 		}
 	}
-
 	// 解挂的功能
 	public void jieGua() {
 		int carid = ui.getInt("请输入卡号：");
@@ -283,18 +311,17 @@ public class Control {
 				v.println("解挂失败");
 			}
 		}
-//		int i = ui.getInt("请输入卡号：");
-//		card c= rs.selectCardById(i);
-//		rs.loss(i, "冻结");
-//		rs.openCard(new card(ui.getInt("请输入新卡号："), c.getEid(), c.getPayid(), c.getBalance(), "活跃"));
+		//		int i = ui.getInt("请输入卡号：");
+		//		card c= rs.selectCardById(i);
+		//		rs.loss(i, "冻结");
+		//		rs.openCard(new card(ui.getInt("请输入新卡号："), c.getEid(), c.getPayid(), c.getBalance(), "活跃"));
 	}
-
 	// 充值的功能
 	public void deposit() {
 		int cid = ui.getInt("请输入卡号：");
 		Calendar cal = Calendar.getInstance();
 		int d = cal.get(Calendar.DATE);
-		double balance = ui.getDouble("请输入你要充值的金额(28号冲200及赠50哦)：");
+		double balance = ui.getDouble("请输入你要充值的金额(28号冲200及以上赠50哦)：");
 		if (balance >= 200 && d == 28) {
 			v.println(rs.deposit(cid, (balance + 50)));
 		} else {
@@ -305,91 +332,204 @@ public class Control {
 	}
 
 	//1.添加员工
-		public void addEmp(){
-			String s = rs.addEmp(new employ(ui.getInt("请输入员工编号："), ui.getString("请输入员工姓名："), ui.getString("请输入用户名："), ui.getString("请输入密码："), ui.getString("请输入工作类型："), ui.getString("请输入性别：")));
-			System.out.println(s);	
-		}
-		//2.删除员工
-		public void deleteEmp(){
+	public void addEmp(){
+		ij:	while(true){
+			int i=ui.getInt("请输入员工编号：");
+			employ e = rs.findEmpById(i);
+			if(e!=null){
+				System.err.println("该用户编号已存在！");
+				break;
+			}
+			String name = ui.getString("请输入员工姓名：");
+			String accout= ui.getString("请输入用户名：");
 			List<employ> list = rs.findAllEmp();
-			System.out.println("当前所有职员");
-			System.out.println("员工编号/t员工姓名/t职位/t性别");
-			for (employ emp : list) {
-				System.out.println(emp.getEid()+"\t"+emp.getEname()+"\t"+emp.getJobtype()+"\t"+emp.getSex());
-			}
-			v.println(rs.deleteEmp(ui.getInt("请选择要删除的员工编号：")));
-		}
-		//3.补卡
-		public void newCard(){
-			//先查看原来卡的内容
-			card c = rs.fingCardById(ui.getInt("请输入原有卡号："));
-			//将原来卡的内容复制到新卡
-			int i = ui.getInt("请输入要补办的卡号：");
-			String s = rs.newCad(new card(i, c.getEid(), c.getPayid(), c.getBalance(), "活跃"));
-			//将原来卡冻结
-			rs.coldCard(c.getCarid(), "冻结");
-//			System.out.println(s);
-			if("开卡成功".equals(s)) {
-				v.println("补卡成功");
-				v.println("卡号\t余额");
-				v.println(i+"\t"+c.getBalance());
-			}
-		}
-		//4.冻结客户
-		public void coldCard(){
-			String s = rs.coldCard(ui.getInt("请输入要冻结的卡号："),"冻结");
-			System.out.println(s);
-		}
-		//5.菜品管理
-		public void vegeManage(){
-			while(true){
-				v.vegemana();
-				int i = ui.getInt("请选择：");
-				if(i==1){
-					//1.添加菜品
-					String s = this.rs.addMenu(new menu(ui.getInt("请输入菜的编号："), ui.getString("请输入菜的名称："), ui.getDouble("请输入菜的单价："), ui.getInt("请输入菜所属的类型编号："), ui.getString("请输入是否是特价菜：")));
-					System.out.println(s);
-				}else if(i==2){
-					//删除菜品
-					List<vegetType> li = rs.showAllType();
-					System.out.println("类型编号\t类型名称");
-					for (vegetType ve : li) {
-						System.out.println(ve.getId()+"\t"+ve.getTypename());
-					}
-					List<menu> list = rs.selectFood(ui.getInt("请选择菜品类型编号："));
-					System.out.println("菜品ID\t菜品名称\t菜品单价");
-					for (menu me : list) {
-						System.out.println(me.getMeid()+"\t"+me.getMename()+"\t"+me.getMeprice());
-					}
-					String s = rs.deleteMenu(ui.getInt("请选择要删除的菜的编号："));
-					System.out.println(s);
-				}else if(i==3){
-					//设置特价菜
-					v.println("");
-					List<vegetType> li = rs.showAllType();
-					System.out.println("类型编号\t类型名称");
-					for (vegetType ve : li) {
-						System.out.println(ve.getId()+"\t"+ve.getTypename());
-					}
-					List<menu> list = rs.selectFood(ui.getInt("请选择菜品类型编号："));
-					System.out.println("菜品ID\t菜品名称\t菜品单价");
-					for (menu me : list) {
-						System.out.println(me.getMeid()+"\t"+me.getMename()+"\t"+me.getMeprice());
-					}
-					int a=ui.getInt("请输入要设置的特价菜编号：");
-					String s = rs.selectSpecial(a);
-					String s1 = rs.setSpecialMenu(a);
-					System.out.println(s+s1);
-				}else if(i==4){
-					//查看菜单
-					List<menu> list = rs.showAllMenu();
-					System.out.println("所有菜单如下");
-					v.println("编号\t名称\t价格\t类型\t是否是特价菜");
-					for (menu me : list) {
-						String s = rs.findtypename(me.getTypeid());
-						System.out.println(me.getMeid()+"\t"+me.getMename()+"\t"+me.getMeprice()+"\t"+s+"\t"+me.getIfspecials());
-					}
+			for (employ em : list) {
+				if(em.getAccout().equals(accout)){
+					System.err.println("该用户名已存在！");
+					break ij;
 				}
 			}
+			String pass= ui.getString("请输入密码：");
+			String jobType=ui.getString("请输入工作类型(员工或经理)：");
+			if(!jobType.equals("经理")&&!jobType.equals("员工")){
+				System.err.println("请输入员工或经理！");
+				break;
+			}
+			String sex= ui.getString("请输入性别(男或女)：");
+			if(!sex.equals("男")&&!sex.equals("女")){
+				System.err.println("请输入男或女！");
+				break;
+			}
+			String s = rs.addEmp(new employ(i,name ,accout,pass, jobType,sex));	
+			System.out.println(s);
+			break;
 		}
+	}
+	//2.删除员工
+	public void deleteEmp(){
+		List<employ> list = rs.findAllEmp();
+		System.out.println("当前所有职员");
+		System.out.println("员工编号/t员工姓名/t职位/t性别");
+		for (employ emp : list) {
+			System.out.println(emp.getEid()+"\t"+emp.getEname()+"\t"+emp.getJobtype()+"\t"+emp.getSex());
+		}
+		v.println(rs.deleteEmp(ui.getInt("请选择要删除的员工编号：")));
+	}
+	//3.补卡
+	public void newCard(){
+		//先查看原来卡的内容
+		while(true){
+			card c = rs.fingCardById(ui.getInt("请输入原有卡号："));
+			if(c==null){
+				System.err.println("卡号不存在");
+				System.out.println();
+				break;
+			}else{
+				//将原来卡的内容复制到新卡
+				int i = ui.getInt("请输入要补办的卡号：");
+				String s = rs.newCad(new card(i, c.getEid(), c.getPayid(), c.getBalance(), "活跃"));
+				//将原来卡冻结
+				rs.coldCard(c.getCarid(), "冻结");
+				if("开卡成功".equals(s)) {
+					v.println("补卡成功");
+					v.println("卡号\t余额");
+					v.println(i+"\t"+c.getBalance());
+				}
+				break;
+			}				
+		}	
+	}
+	//4.冻结客户
+	public void coldCard(){
+		while(true){
+			int i=ui.getInt("请输入要冻结的卡号：");
+			employ em = rs.findEmpById(i);
+			if(em==null){
+				System.err.println("卡号不存在,请重新输入");
+				System.out.println("-----------------");
+			}else{
+				String s = rs.coldCard(i,"冻结");
+				System.out.println(s);
+				break;
+			}			
+		}		
+	}
+	//5.菜品管理
+	public void vegeManage(){
+		while(true){
+			v.vegemana();
+			int i = ui.getInt("请选择：");
+			if(i==1){
+				this.addmenu();
+			}else if(i==2){
+				this.deletemenu();
+			}else if(i==3){
+				this.setSpexialMenu();
+			}else if(i==4){
+				this.showMenu();
+			}
+		}
+	}
+	//添加菜品
+	public void addmenu(){
+		p:	while(true){
+			int i=ui.getInt("请输入菜的编号：");
+			menu m = rs.selectFoodById(i);
+			if(m!=null){
+				System.err.println("菜品编号已存在");
+				break;
+			}
+			String name= ui.getString("请输入菜的名称：");
+			List<menu> list = rs.selectAllFood();
+			for (menu me : list) {
+				if(me.getMename().equals(name)){
+					System.err.println("已存在");
+					break p;
+				}			
+			}
+			double price= ui.getDouble("请输入菜的单价：");
+			List<vegetType> li = rs.showAllType();
+			System.out.println("类型编号\t类型名称");
+			for (vegetType ve : li) {
+				System.out.println(ve.getId()+"\t"+ve.getTypename());
+			}
+			int typeid= ui.getInt("请输入菜所属的类型编号：");
+			String is= ui.getString("请输入是否是特价菜：");
+			if(!is.equals("男")&&!is.equals("女")){
+				System.err.println("请输入是或否！");
+				break;
+			}
+			String s = this.rs.addMenu(new menu(i,name,price,typeid,is));
+			System.out.println(s);
+		}		
+	}
+	//删除菜品
+	public void deletemenu(){
+		List<vegetType> li = rs.showAllType();
+		System.out.println("类型编号\t类型名称");
+		for (vegetType ve : li) {
+			System.out.println(ve.getId()+"\t"+ve.getTypename());
+		}
+		List<menu> list = rs.selectFood(ui.getInt("请选择菜品类型编号："));
+		System.out.println("菜品ID\t菜品名称\t菜品单价");
+		for (menu me : list) {
+			System.out.println(me.getMeid()+"\t"+me.getMename()+"\t"+me.getMeprice());
+		}
+		String s = rs.deleteMenu(ui.getInt("请选择要删除的菜的编号："));
+		System.out.println(s);
+	}
+	//设置特价菜
+	public void setSpexialMenu(){
+		v.println("");
+		List<vegetType> li = rs.showAllType();
+		System.out.println("类型编号\t类型名称");
+		//遍历输出菜品类型的编号和名称
+		for (vegetType ve : li) {
+			System.out.println(ve.getId()+"\t"+ve.getTypename());
+		}
+		List<menu> list = rs.selectFood(ui.getInt("请选择菜品类型编号："));
+		System.out.println("菜品ID\t菜品名称\t菜品单价");
+		for (menu me : list) {
+			System.out.println(me.getMeid()+"\t"+me.getMename()+"\t"+me.getMeprice());
+		}
+		int a=ui.getInt("请输入要设置的特价菜编号：");
+		String s = rs.selectSpecial(a);
+		String s1 = rs.setSpecialMenu(a);
+		System.out.println(s+s1);
+	}
+	//查看菜单
+	public void showMenu(){
+		List<menu> list = rs.showAllMenu();
+		System.out.println("所有菜单如下");
+		v.println("编号\t名称\t价格\t类型\t是否是特价菜");
+		for (menu me : list) {
+			String s = rs.findtypename(me.getTypeid());
+			System.out.println(me.getMeid()+"\t"+me.getMename()+"\t"+me.getMeprice()+"\t"+s+"\t"+me.getIfspecials());
+		}
+	}
+	//查看本月销售量
+	public void showMSalesVolume() {
+		double sum=0;
+		List<orderitem> list = rs.selectAllitem();
+		Calendar cal = Calendar.getInstance();
+		int d = cal.get(Calendar.MONTH);
+		for (orderitem oi : list) {
+			orders orders = rs.selectOrdersById(oi.getOrid());
+			menu menu = rs.selectFoodById(oi.getMeid());
+			if(orders.getOrtime().getMonth()==d) {
+				sum+=oi.getNum()*menu.getMeprice();
+			}
+		}
+		v.println((d+1)+"月总销售额为："+sum);
+		v.println("");
+	}
+	//查看最受欢迎的菜
+	public void mostFood() {
+		List<orderitem> list = rs.selectSumNum();
+		int i = list.get(0).getMeid();
+		menu me = rs.selectFoodById(i);
+		double num=list.get(0).getNum();
+		v.println("最受欢迎的菜是："+me.getMename());
+		v.println("销量是："+num);
+	}
 }
