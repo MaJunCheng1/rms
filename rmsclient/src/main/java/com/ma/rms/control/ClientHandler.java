@@ -17,7 +17,6 @@ public class ClientHandler implements InvocationHandler{
 		this.port = port;
 	}
 
-
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		//创建套接字对象
 		Socket client=new Socket(ip, port);

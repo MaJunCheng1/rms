@@ -14,7 +14,7 @@ public class MyTest {
 		menuDao me=new menuDaoImpl();
 		System.out.println(me.findFoodById(1));
 	}
-//	@Test
+	@Test
 	public void  findAllFood() {
 		menuDao me=new menuDaoImpl();
 		List<menu> list = me.findAllFood();
@@ -22,7 +22,7 @@ public class MyTest {
 			System.out.println(me2.getMename());
 		}
 	}
-	@Test
+//	@Test
 	public void insertFood() {
 		menuDao me=new menuDaoImpl();
 		me.insertFood(new menu(3, "鱼香肉丝", 15, 1, "是"));
@@ -36,5 +36,18 @@ public class MyTest {
 	public void updateFood() {
 		menuDao me=new menuDaoImpl();
 		me.updateFood(1, "麻婆豆腐", 9, 2, "否");
+	}
+//	@Test
+	public void findtypename() {
+		menuDao me=new menuDaoImpl();
+		System.out.println(me.findtypename(1));
+	}
+//	@Test
+	public void findFood() {
+		menuDao me=new menuDaoImpl();
+		List<menu> list = me.findFood(2);
+		for (menu m : list) {
+			System.out.println(m.getMename());
+		}
 	}
 }

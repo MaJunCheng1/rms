@@ -66,7 +66,8 @@ public class empDaoImpl implements empDao {
 				return new employ(rs.getInt("eid"),rs.getString("ename"),rs.getString("accout"),rs.getString("password"),rs.getString("jobtype"),rs.getString("sex"));
 			}	
 		} catch (SQLException e) {
-			System.out.println(e.getMessage());
+//			System.out.println(e.getMessage());
+			e.printStackTrace();
 			return null;
 		}finally{
 			this.db.closed();

@@ -1,6 +1,12 @@
 package com.ma.rms.domain;
 
-public class card {
+import java.io.Serializable;
+
+public class card implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5454;
 	private int carid;	//卡号
 	private int eid;    //employid
 	private int payid;	//支付类型号

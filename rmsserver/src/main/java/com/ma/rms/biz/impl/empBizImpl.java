@@ -28,5 +28,8 @@ public class empBizImpl implements empBiz {
 	public employ findById(int id) {
 		return this.ed.findById(id);
 	}
+	public employ findOneEmp(String accout, String password) {
+		return ed.findOneEmp(accout, password);
+	}
 	
 }

@@ -39,4 +39,15 @@ public class menuBizIpml implements menuBiz{
 		return mb.findFood(typeid);
 	}
 
+	public String selecttypename(int typeid) {
+		return mb.findtypename(typeid);
+	}
+
+	public String selectSpecial(int id) {
+		return mb.selectSpecial(id)?"已选择,":"未选中,";
+	}
+
+	public String setSpecial(int id) {
+		return mb.setSpecial(id)?"设置价格成功":"价格设置出错";
+	}
 }

@@ -1,56 +1,85 @@
 package com.ma.rms.service.impl;
 
+
 import java.util.List;
 
+import com.ma.rms.biz.cardBiz;
+import com.ma.rms.biz.empBiz;
+import com.ma.rms.biz.menuBiz;
+import com.ma.rms.biz.impl.cardBizImpl;
+import com.ma.rms.biz.impl.empBizImpl;
+import com.ma.rms.biz.impl.menuBizIpml;
+import com.ma.rms.domain.card;
 import com.ma.rms.domain.employ;
 import com.ma.rms.domain.menu;
 import com.ma.rms.service.BackstageService;
 
-public class BackstageServiceImpl implements BackstageService{
-
-	public String addEmp(employ em) {
-		// TODO Auto-generated method stub
-		return null;
+public class BackstageServiceImpl implements BackstageService {
+	private empBiz eb;
+	private cardBiz cb;
+	private menuBiz mb;
+	public BackstageServiceImpl() {
+		super();
+		this.eb = new empBizImpl();
+		this.cb = new cardBizImpl();
+		this.mb = new menuBizIpml();
 	}
 
-	public String deleteEmp(int eid) {
-		// TODO Auto-generated method stub
-		return null;
+	public String addEmp(employ e) {
+		return this.eb.insertEmp();
 	}
 
-	public String replaceCard(int carid, int newId) {
-		// TODO Auto-generated method stub
-		return null;
+	public String deleteEmp(int id) {
+		return this.eb.deleteEmp(id);
 	}
 
-	public String frozenCard(int carid) {
-		// TODO Auto-generated method stub
-		return null;
+	public employ findEmpById(int id) {
+		return this.eb.findById(id);
 	}
 
-	public menu selectFoodById(int meid) {
-		// TODO Auto-generated method stub
-		return null;
+	public card fingCardById(int id) {
+		return this.cb.findCardById(id);
 	}
 
-	public String addFood(menu m) {
-		// TODO Auto-generated method stub
-		return null;
+	public String newCad(card c) {
+		return this.cb.insertCard(c);
 	}
 
-	public String deleteFood(int meid) {
-		// TODO Auto-generated method stub
-		return null;
+	public String coldCard(int carid, String status) {
+		return this.cb.updateStatus(carid, status)?"用户被成功冻结":"冻结该用户失败";
 	}
 
-	public String choice(int meid, String s) {
-		// TODO Auto-generated method stub
-		return null;
+	public String addMenu(menu m) {
+		return this.mb.addFood(m);
 	}
 
-	public List<menu> showAllFood() {
-		// TODO Auto-generated method stub
-		return null;
+	public String deleteMenu(int id) {
+		return this.mb.removeFood(id);
 	}
+
+	public String updeteMenu(int id,String name,double pri,int tyid,String spec) {
+		return this.mb.changeFood(id, name, pri, tyid, spec);
+	}
+
+	public List<menu> showAllMenu() {
+		return this.mb.selectAllFood();
+	}
+
+	public String selectSpecial(int id) {
+		return this.mb.selectSpecial(id);
+	}
+
+	public List<menu> selectFood(int typeid) {
+		return this.mb.selectFood(typeid);
+	}
+
+	public List<employ> findAllEmp() {
+		return this.eb.showAllEmp();
+	}
+
+	public String setSpecialMenu(int id) {
+		return this.mb.setSpecial(id);
+	}
+
 
 }

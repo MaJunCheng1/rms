@@ -21,7 +21,7 @@ public class menuDaoImpl implements menuDao{
 				return new menu(res.getInt("meid"), res.getString("mename"), res.getDouble("meprice"), res.getInt("typeid"), res.getString("ifspecials"));
 			}
 		} catch (SQLException e) {
-			System.out.println("出现的错误是:"+e.getMessage());
+			System.out.println(e.getMessage());
 			return null;
 		}finally {
 			db.closed();
@@ -40,7 +40,7 @@ public class menuDaoImpl implements menuDao{
 			}
 			return list;
 		} catch (SQLException e) {
-			System.out.println("出现的错误是:"+e.getMessage());
+			System.out.println(e.getMessage());
 			return null;
 		}finally {
 			db.closed();
@@ -54,8 +54,10 @@ public class menuDaoImpl implements menuDao{
 			int i = db.update(sql,me.getMeid(),me.getMename(),me.getMeprice(),me.getTypeid(),me.getIfspecials());
 			return i>0;
 		} catch (SQLException e) {
-			System.out.println("出现的错误是:"+e.getMessage());
+			System.out.println(e.getMessage());
 			return false;
+		}finally {
+			db.closed();
 		}
 	}
 
@@ -66,8 +68,10 @@ public class menuDaoImpl implements menuDao{
 			int i = db.update(sql);
 			return i>0;
 		} catch (SQLException e) {
-			System.out.println("出现的错误是:"+e.getMessage());
+			System.out.println(e.getMessage());
 			return false;
+		}finally {
+			db.closed();
 		}
 	}
 
@@ -78,8 +82,10 @@ public class menuDaoImpl implements menuDao{
 			int i = db.update(sql, mename,meprice,typeid,ifspecials);
 			return i>0;
 		} catch (SQLException e) {
-			System.out.println("出现的错误是:"+e.getMessage());
+			System.out.println(e.getMessage());
 			return false;
+		}finally {
+			db.closed();
 		}
 	}
 
@@ -94,9 +100,63 @@ public class menuDaoImpl implements menuDao{
 			}
 			return list;
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 			return null;
+		}finally {
+			db.closed();
+		}
+	}
+
+	public String findtypename(int typeid) {
+		db=new DBUtil();
+		String sql="select typename from vegetype where typeid="+typeid;
+		try {
+			ResultSet res = db.qurey(sql);
+			if(res.next()) {
+				return  res.getString("typename");
+			}
+			return null;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}finally {
+			db.closed();
 		}
 	}
 	
+	
+	public boolean selectSpecial(int id) {
+		db=new DBUtil();
+		String sql="update set ifspecials='否'";
+		String sql2="update set ifspecials='是' where meid="+id;
+		try {
+			int i = db.update(sql);
+			int j = db.update(sql2);
+			return j>0;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return false;
+		}finally{
+			this.db.closed();
+		}
+	}
+
+	public boolean setSpecial(int id) {
+		db=new DBUtil();
+		String sql="select * from menu where meid="+id;
+		String sql2="update menu set meprice=? where meid="+id;
+		try {
+			ResultSet rs = db.qurey(sql);
+			if(rs.next()){
+				int i = db.update(sql2,rs.getDouble("meprice")*0.3);
+				return i>0;
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return false;
+		}finally{
+			this.db.closed();
+		}
+		return false;
+	}
 }

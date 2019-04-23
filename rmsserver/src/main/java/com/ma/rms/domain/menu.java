@@ -1,14 +1,19 @@
 package com.ma.rms.domain;
 
-public class menu {
+import java.io.Serializable;
+
+public class menu implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8787;
 	private int meid; //菜单编号
 	private String mename; //菜名
 	private double meprice; //价格
 	private String ifspecials; //是否是特价菜
 	private int typeid;  //菜品类型号
-//	private String typename; 
+	private String typename; 
 	private double num;
-	
 	public menu(int meid, String mename, double meprice, int typeid ,String ifspecials, double num) {
 	super();
 	this.meid = meid;
@@ -59,12 +64,12 @@ public class menu {
 	public void setTypeid(int typeid) {
 		this.typeid = typeid;
 	}
-//	public String getTypename() {
-//		return typename;
-//	}
-//	public void setTypename(String typename) {
-//		this.typename = typename;
-//	}
+	public String getTypename() {
+		return typename;
+	}
+	public void setTypename(String typename) {
+		this.typename = typename;
+	}
 	public double getNum() {
 		return num;
 	}

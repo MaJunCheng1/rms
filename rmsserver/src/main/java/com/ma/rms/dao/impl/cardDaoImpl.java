@@ -1,5 +1,6 @@
 package com.ma.rms.dao.impl;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.ma.rms.dao.cardDao;
@@ -23,7 +24,7 @@ public class cardDaoImpl implements cardDao {
 	}
 	public boolean updateBalance(int carid, double balance) {
 		db=new DBUtil();
-		String sql="update card set balance=? where carid=?";
+		String sql="update card set balance=balance+? where carid=?";
 		try {
 			int i = db.update(sql, balance,carid);
 			return i>0;
@@ -47,6 +48,22 @@ public class cardDaoImpl implements cardDao {
 		}finally{
 			this.db.closed();
 		}
+	}
+	
+	public card selectCardById(int carid) {
+		db=new DBUtil();
+		String sql="select * from card where carid="+carid;
+		try {
+			ResultSet res = db.qurey(sql);
+			if(res.next()) {
+				return new card(res.getInt("carid"), res.getInt("eid"), res.getInt("payid"), res.getDouble("balance"), res.getString("status"));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}finally {
+			db.closed();
+		}
+		return null;
 	}
 
 }

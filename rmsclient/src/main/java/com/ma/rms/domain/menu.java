@@ -1,14 +1,29 @@
 package com.ma.rms.domain;
 
-public class menu {
-	private int meid;
-	private String mename;
-	private double meprice;
-	private char ifspecials;
-	private int typeid;
-	private String typename;
+import java.io.Serializable;
+
+public class menu implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8787;
+	private int meid; //菜单编号
+	private String mename; //菜名
+	private double meprice; //价格
+	private String ifspecials; //是否是特价菜
+	private int typeid;  //菜品类型号
+	private String typename; 
 	private double num;
-	public menu(int meid, String mename, double meprice, int typeid, char ifspecials) {
+	public menu(int meid, String mename, double meprice, int typeid ,String ifspecials, double num) {
+	super();
+	this.meid = meid;
+	this.mename = mename;
+	this.meprice = meprice;
+	this.ifspecials = ifspecials;
+	this.typeid = typeid;
+	this.num = num;
+}
+	public menu(int meid, String mename, double meprice, int typeid, String ifspecials) {
 		super();
 		this.meid = meid;
 		this.mename = mename;
@@ -37,10 +52,10 @@ public class menu {
 	public void setMeprice(double meprice) {
 		this.meprice = meprice;
 	}
-	public char getIfspecials() {
+	public String getIfspecials() {
 		return ifspecials;
 	}
-	public void setIfspecials(char ifspecials) {
+	public void setIfspecials(String ifspecials) {
 		this.ifspecials = ifspecials;
 	}
 	public int getTypeid() {

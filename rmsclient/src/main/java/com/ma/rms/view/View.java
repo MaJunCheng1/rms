@@ -1,23 +1,31 @@
 package com.ma.rms.view;
 
 public class View {
+	
+	public void println(String s) {
+		System.out.println(s);
+	}
 	public void welcom(){
-		System.err.println("❤❤❤❤❤❤❤❤❤❤欢迎来到亚惠餐厅❤❤❤❤❤❤❤❤❤❤");
+		System.out.println("❤❤❤❤❤❤❤❤❤❤欢迎来到亚惠餐厅❤❤❤❤❤❤❤❤❤❤");
 		System.out.println();
-		System.out.println("*****请登录**");
+		System.out.println("*****请登录*****");
 	}
 	public void employ(){
-		System.err.println("❤❤❤❤❤❤❤❤❤❤欢迎来到亚惠餐厅员工管理界面❤❤❤❤❤❤❤❤❤❤");
+		System.out.println("❤❤❤❤❤❤❤❤❤❤欢迎来到亚惠餐厅员工界面❤❤❤❤❤❤❤❤❤❤");
 		System.out.println();
 		System.out.println("1.点菜❤");
-		System.out.println("2.结账❤");
-		System.out.println("3.开卡❤");
-		System.out.println("4.挂失❤");
-		System.out.println("5.解挂❤");
-		System.out.println("6.充值❤");
+		System.out.println("2.开卡❤");
+		System.out.println("3.挂失❤");
+		System.out.println("4.解挂❤");
+		System.out.println("5.充值❤");
+	}
+	public void emone() {
+		System.out.println("1.添加菜");
+		System.out.println("2.删除菜");
+		System.out.println("3.显示所有菜");
 	}
 	public void manager(){
-		System.err.println("❤❤❤❤❤❤❤❤❤❤欢迎来到亚惠餐厅经理管理界面❤❤❤❤❤❤❤❤❤❤");
+		System.out.println("❤❤❤❤❤❤❤❤❤❤欢迎来到亚惠餐厅经理界面❤❤❤❤❤❤❤❤❤❤");
 		System.out.println();
 		System.out.println("1.添加员工");
 		System.out.println("2.删除员工");
@@ -26,7 +34,7 @@ public class View {
 		System.out.println("5.菜品管理");
 	}
 	public void vegemana(){
-		System.err.println("❤❤❤❤❤❤❤❤❤❤菜品管理界面❤❤❤❤❤❤❤❤❤❤");
+		System.out.println("❤❤❤❤❤❤❤❤❤❤菜品管理界面❤❤❤❤❤❤❤❤❤❤");
 		System.out.println();
 		System.out.println("1.添加菜品❤❤");
 		System.out.println("2.删除菜品❤❤");

@@ -17,4 +17,9 @@ public interface menuBiz {
 	String changeFood(int meid,String mename,double meprice,int typeid,String ifspecials);
 	//通过typeid查找菜品信息
 	List<menu> selectFood(int typeid);
+	//通过typeid查找typename
+	String selecttypename(int typeid);
+	//选择特价菜
+	String selectSpecial(int id);
+	String setSpecial(int id);
 }

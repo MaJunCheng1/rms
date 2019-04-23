@@ -17,4 +17,9 @@ public interface menuDao {
 	boolean updateFood(int meid,String mename,double meprice,int typeid,String ifspecials);
 	//通过typeid查找菜品信息
 	List<menu> findFood(int typeid);
+	//通过typeid查找typename
+	String findtypename(int typeid);
+	//选择特价菜
+	boolean selectSpecial(int id);
+	boolean setSpecial(int id);
 }

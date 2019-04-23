@@ -11,7 +11,7 @@ public class UserInput {
 		Scanner sc = new Scanner(System.in);
 		return sc.next();
 	}
-	
+		
 	//接收整数
 	public int getInt(String msg) {
 		while (true) {

@@ -13,4 +13,6 @@ public interface empBiz {
 	List<employ> showAllEmp();    
 	//根据id查找员工信息
 	public employ findById(int id);
+	//根据账号密码查询客户信息
+	public employ findOneEmp(String accout,String password);
 }

@@ -1,6 +1,12 @@
 package com.ma.rms.domain;
 
-public class employ {
+import java.io.Serializable;
+
+public class employ implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6565;
 	private int eid; //员工号
 	private String ename; //员工姓名
 	private String accout; //账号

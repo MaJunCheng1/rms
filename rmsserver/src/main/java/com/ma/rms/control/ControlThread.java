@@ -20,9 +20,8 @@ public class ControlThread implements Runnable {
 		this.client = client;
 		this.o=o;
 	}
-
-
-		public void run() {
+	
+	public void run() {
 			//获取输入流 用户接收客户端代理发送的方法名称 ,参数类型,参数列表
 			try {
 				ObjectInputStream ois=new ObjectInputStream(client.getInputStream());

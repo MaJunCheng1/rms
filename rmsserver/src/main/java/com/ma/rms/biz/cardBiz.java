@@ -8,5 +8,9 @@ public interface cardBiz {
 	//结账修改余额
 	String updateBalance(int carid,double balance);
 	//修改卡的状态
-	String updateStatus(int carid,String status);
+	boolean updateStatus(int carid,String status);
+	// 根据卡号找卡
+	card findCardById(int carid);
+	// 充值
+	String deposit(int carid, double balance);
 }

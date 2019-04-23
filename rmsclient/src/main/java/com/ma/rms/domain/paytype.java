@@ -1,9 +1,16 @@
 package com.ma.rms.domain;
 
-public class paytype {
-	private int payid;
-	private String payname;
-	private double discount;
+import java.io.Serializable;
+
+//需不需要待定
+public class paytype implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3232;
+	private int payid; //支付类型号
+	private String payname; //支付名字
+	private double discount; //优惠额度
 	public paytype() {
 		super();
 	}
