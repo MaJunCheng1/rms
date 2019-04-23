@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.ma.rms.dao.menuDao;
 import com.ma.rms.domain.menu;
+import com.ma.rms.domain.vegetType;
 import com.ma.rms.util.DBUtil;
 
 public class menuDaoImpl implements menuDao{
@@ -127,10 +128,10 @@ public class menuDaoImpl implements menuDao{
 	
 	public boolean selectSpecial(int id) {
 		db=new DBUtil();
-		String sql="update set ifspecials='否'";
-		String sql2="update set ifspecials='是' where meid="+id;
+//		String sql="update set ifspecials='否'";
+		String sql2="update menu set ifspecials='是' where meid="+id;
 		try {
-			int i = db.update(sql);
+//			int i = db.update(sql);
 			int j = db.update(sql2);
 			return j>0;
 		} catch (SQLException e) {
@@ -158,5 +159,23 @@ public class menuDaoImpl implements menuDao{
 			this.db.closed();
 		}
 		return false;
+	}
+
+	public List<vegetType> showVegeType() {
+		db=new DBUtil();
+		String sql="select * from vegetype";
+		List<vegetType> list=new ArrayList<vegetType>();
+		try {
+			ResultSet rs = db.qurey(sql);
+			while(rs.next()) {
+				list.add(new vegetType(rs.getInt("typeid"),rs.getString("typename")));
+			}
+			return list;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}finally {
+			this.db.closed();
+		}
+		return null;
 	}
 }

@@ -3,6 +3,7 @@ package com.ma.rms.biz;
 import java.util.List;
 
 import com.ma.rms.domain.menu;
+import com.ma.rms.domain.vegetType;
 
 public interface menuBiz {
 	//根据meid查找该菜的信息
@@ -22,4 +23,6 @@ public interface menuBiz {
 	//选择特价菜
 	String selectSpecial(int id);
 	String setSpecial(int id);
+	//显示所有菜
+	List<vegetType> showAllType();
 }

@@ -3,6 +3,7 @@ package com.ma.rms.dao;
 import java.util.List;
 
 import com.ma.rms.domain.menu;
+import com.ma.rms.domain.vegetType;
 
 public interface menuDao {
 	//根据meid查找该菜的信息
@@ -22,4 +23,6 @@ public interface menuDao {
 	//选择特价菜
 	boolean selectSpecial(int id);
 	boolean setSpecial(int id);
+	//显示所有菜的类型
+	List<vegetType> showVegeType();
 }

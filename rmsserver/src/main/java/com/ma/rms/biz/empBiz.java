@@ -6,7 +6,7 @@ import com.ma.rms.domain.employ;
 
 public interface empBiz {
 	//增加员工信息
-	String insertEmp();
+	String insertEmp(employ e);
 	//删除员工信息
 	String deleteEmp(int id);
 	//查看员工信息

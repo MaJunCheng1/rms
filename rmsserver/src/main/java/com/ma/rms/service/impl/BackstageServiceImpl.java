@@ -26,7 +26,7 @@ public class BackstageServiceImpl implements BackstageService {
 	}
 
 	public String addEmp(employ e) {
-		return this.eb.insertEmp();
+		return this.eb.insertEmp(e);
 	}
 
 	public String deleteEmp(int id) {

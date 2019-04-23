@@ -6,6 +6,7 @@ import com.ma.rms.biz.menuBiz;
 import com.ma.rms.dao.menuDao;
 import com.ma.rms.dao.impl.menuDaoImpl;
 import com.ma.rms.domain.menu;
+import com.ma.rms.domain.vegetType;
 
 public class menuBizIpml implements menuBiz{
 	menuDao mb;
@@ -49,5 +50,9 @@ public class menuBizIpml implements menuBiz{
 
 	public String setSpecial(int id) {
 		return mb.setSpecial(id)?"设置价格成功":"价格设置出错";
+	}
+
+	public List<vegetType> showAllType() {
+		return mb.showVegeType();
 	}
 }

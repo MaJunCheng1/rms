@@ -14,11 +14,11 @@ public class empBizImpl implements empBiz {
 		super();
 		ed=new empDaoImpl();
 	}
-	public String insertEmp() {
-		return this.ed.insertEmp(new employ())?"添加成功":"添加失败";
+	public String insertEmp(employ e) {
+		return this.ed.insertEmp(e)?"添加成功":"添加失败";
 	}
 	public String deleteEmp(int id) {
-		return this.ed.deleteEmp(id)?"删除成功":"删除失败";
+		return this.ed.deleteEmp(id)?"删除成功":"没有该员工";
 	}
 
 	public List<employ> showAllEmp() {

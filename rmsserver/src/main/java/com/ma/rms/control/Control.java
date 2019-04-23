@@ -56,7 +56,7 @@ public class Control {
 				ControlThread ct2 = new ControlThread(client,bs);
 				//将线程对象交给线程池管理
 				es.submit(ct);
-				es.submit(ct2);
+//				es.submit(ct2);
 				//返回处于活跃状态的线程数量
 				int i = ((ThreadPoolExecutor)es).getActiveCount();
 				System.out.println("在线人数是"+i);
