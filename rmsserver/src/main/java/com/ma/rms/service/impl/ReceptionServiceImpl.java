@@ -74,8 +74,8 @@ public class ReceptionServiceImpl implements ReceptionService{
 		return oib.changeOrderitem(orid, num);
 	}
 
-	public String deleteOrderitem(String orid) {
-		return oib.removeOrderitem(orid);
+	public String deleteOrderitem() {
+		return oib.removeOrderitem();
 	}
 	
 	public String deleteOneOrderitem(String orid,int meid) {
@@ -121,7 +121,10 @@ public class ReceptionServiceImpl implements ReceptionService{
 	public String deposit(int carid, double balance) {
 		return cb.deposit(carid, balance);
 	}
-
+	//修改密码
+	public	String updatePass(int eid,String newPass) {
+		return eb.changePass(eid,newPass);
+	}
 
 	public String addEmp(employ e) {
 		return this.eb.insertEmp(e);

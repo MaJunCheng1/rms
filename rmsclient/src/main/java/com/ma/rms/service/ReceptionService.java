@@ -32,8 +32,8 @@ public interface ReceptionService {
 		String addOrderitem(orderitem oi);
 		//修改订单项,并删除num小于定于0的菜
 		String updateOrderitem(String orid,double num);
-		//删除订单项
-		String deleteOrderitem(String orid);
+		//删除订单项(num为0)
+		String deleteOrderitem();
 		//删除订单项(一个)
 		String deleteOneOrderitem(String orid,int meid);
 		//通过orid查询订单项
@@ -51,7 +51,6 @@ public interface ReceptionService {
 	//结账(修改余额)
 	String updateCard(int carid,double money);
 	
-	
 	//根据卡号找卡
 	card selectCardById(int carid);
 	//开卡
@@ -59,9 +58,10 @@ public interface ReceptionService {
 	//挂失
 	boolean loss(int carid,String status);
 	
-
 	//充值
 	String deposit(int carid,double balance);
+	//修改密码
+	String updatePass(int eid,String newPass);
 	
 	
 	

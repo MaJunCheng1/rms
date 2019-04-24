@@ -15,4 +15,6 @@ public interface empBiz {
 	public employ findById(int id);
 	//根据账号密码查询客户信息
 	public employ findOneEmp(String accout,String password);
+	//修改密码
+	String changePass(int eid,String newPass);
 }

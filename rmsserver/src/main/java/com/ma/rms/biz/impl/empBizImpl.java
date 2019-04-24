@@ -31,5 +31,8 @@ public class empBizImpl implements empBiz {
 	public employ findOneEmp(String accout, String password) {
 		return ed.findOneEmp(accout, password);
 	}
-	
+	//修改密码
+	public String changePass(int eid,String newPass) {
+		return this.ed.updatePass(eid,newPass)?"修改成功":"修改失败";
+	};
 }

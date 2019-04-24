@@ -23,8 +23,8 @@ public class orderitemBizImpl implements orderitemBiz {
 		return od.updateOrderitem(orid, num)?"已从购物车里删除":"修改失败";
 	}
 
-	public String removeOrderitem(String orid) {
-		return od.deleteOrderitem(orid)?"删除成功":"删除失败";
+	public String removeOrderitem() {
+		return od.deleteOrderitem()?"删除成功":"删除失败";
 	}
 
 	public String removeOneOrderitem(String orid, int meid) {

@@ -15,4 +15,6 @@ public interface empDao {
 	public employ findOneEmp(String accout, String password);
 	// 根据id查找员工
 	public employ findById(int id);
+	//修改密码
+	public boolean updatePass(int eid,String newPass);
 }

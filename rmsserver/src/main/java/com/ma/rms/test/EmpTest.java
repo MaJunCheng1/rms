@@ -30,7 +30,7 @@ public class EmpTest {
 			System.out.println(em.getEname());
 		}
 	}
-	@Test
+//	@Test
 	public void findOneEmp() {
 		empDao ed=new empDaoImpl();
 		employ em = ed.findOneEmp("111","111");
@@ -42,5 +42,11 @@ public class EmpTest {
 		empDao ed=new empDaoImpl();
 		employ em = ed.findById(1);
 		System.out.println(em.getEname());
+	}
+	@Test
+	public void updatePass(){
+		empDao ed=new empDaoImpl();
+		boolean b= ed.updatePass(1, "111");
+		System.out.println(b);
 	}
 }

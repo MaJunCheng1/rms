@@ -24,7 +24,7 @@ public class OrderitemTest {
 //	@Test
 	public void deleteOrderitem() {
 		orderitemDao od=new orderitemDaoImpl();
-		boolean b = od.deleteOrderitem("ba14d6e472454deebb0f01f4cce300d0");
+		boolean b = od.deleteOrderitem();
 		System.out.println(b);
 	}
 //	@Test

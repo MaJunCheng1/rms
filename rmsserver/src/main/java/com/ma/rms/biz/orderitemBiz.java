@@ -10,7 +10,7 @@ public interface orderitemBiz {
 	// 修改订单项
 	String changeOrderitem(String orid, double num);
 	//删除订单项
-	String removeOrderitem(String orid);
+	String removeOrderitem();
 	//删除订单项(一个)
 	String removeOneOrderitem(String orid,int meid);
 	// 通过orid查询订单项

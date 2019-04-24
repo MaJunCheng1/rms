@@ -40,11 +40,11 @@ public class orderitemDaoImpl implements orderitemDao {
 		}
 	}
 
-	public boolean deleteOrderitem(String orid) {
+	public boolean deleteOrderitem() {
 		db=new DBUtil();
-		String sql="delete from orderitem where orid=?";
+		String sql="delete from orderitem where num=0";
 		try {
-			int i = db.update(sql,orid);
+			int i = db.update(sql);
 			return i>0;
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

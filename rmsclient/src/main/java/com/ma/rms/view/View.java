@@ -18,6 +18,7 @@ public class View {
 		System.out.println("3.挂失");
 		System.out.println("4.解挂");
 		System.out.println("5.充值");
+		System.out.println("6.修改密码");
 		System.out.println("0.退出");
 	}
 	public void emone() {
@@ -35,6 +36,9 @@ public class View {
 		System.out.println("5.菜品管理");
 		System.out.println("6.查看月销售量");
 		System.out.println("7.查看最受欢迎的菜");
+		System.out.println("8.查看返回意见");
+		System.out.println("9.修改密码");
+		System.out.println("10.添加公告");
 		System.out.println("0.退出");
 	}
 	public void vegemana(){

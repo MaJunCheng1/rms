@@ -1,12 +1,20 @@
 package com.ma.rms.control;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import org.junit.Test;
 
 import com.ma.rms.domain.card;
 import com.ma.rms.domain.employ;
@@ -15,7 +23,6 @@ import com.ma.rms.domain.menu;
 import com.ma.rms.domain.orderitem;
 import com.ma.rms.domain.orders;
 import com.ma.rms.domain.vegetType;
-//import com.ma.rms.service.BackstageService;
 import com.ma.rms.service.ReceptionService;
 import com.ma.rms.util.UserInput;
 import com.ma.rms.view.View;
@@ -28,7 +35,6 @@ public class Control {
 	//	private static final String IP = "localhost";
 	private static final int PORT = 5555;
 	private ReceptionService rs;
-	//	private BackstageService bs;
 
 	private employ emp;
 	private String orid;
@@ -40,7 +46,6 @@ public class Control {
 		this.v = new View();
 		// 创建代理对象
 		rs = ProxyClient.getClient(ReceptionService.class, IP, PORT);
-		//		bs = ProxyClient.getClient(BackstageService.class, IP, PORT);
 	}
 
 	public void start() {
@@ -53,6 +58,8 @@ public class Control {
 			} else if ("员工".equals(em.getJobtype())) {
 				emp = em;
 				v.println("欢迎员工" + em.getEname());
+				v.println("");
+				this.seenotice();
 				while (true) {
 					v.employ();
 					int select = ui.getInt("请选择：");
@@ -71,7 +78,11 @@ public class Control {
 					} else if (select == 5) {
 						deposit();
 						v.println("");
+					}else if(select==6) {
+						changePass();
+						v.println("");
 					}else if(select == 0) {
+						this.backview();
 						v.println("欢迎本次使用");
 						System.exit(0);
 					}else {
@@ -80,6 +91,7 @@ public class Control {
 					}
 				}
 			} else if ("经理".equals(em.getJobtype())) {
+				emp = em;
 				v.println("欢迎" + em.getEname()+"经理");
 				while(true){
 					v.manager();
@@ -98,6 +110,12 @@ public class Control {
 						showMSalesVolume();
 					}else if(select==7) {
 						mostFood();
+					}else if(select==8) {
+						this.acceptView();
+					}else if(select==9) {
+						this.changePass();
+					}else if(select==10) {
+						this.addnotice();
 					}else if(select==0) {
 						v.println("欢迎本次使用");
 						System.exit(0);
@@ -179,7 +197,6 @@ public class Control {
 					break one;
 				} else if (select3 == 3) {
 					System.out.println("已取消订单");
-					//rs.deleteOrderitem(uid);
 					rs.deleteOrders(uid);
 					return;
 				} else {
@@ -221,6 +238,7 @@ public class Control {
 				card c = rs.selectCardById(or.getCarid());
 				if("冻结".equals(c.getStatus())) {
 					v.println("你的卡已被冻结,交易结束!");
+					rs.deleteOrders(orid);
 					return;
 				}else {
 					if (c.getPayid() == 1) {
@@ -242,6 +260,8 @@ public class Control {
 				System.out.println("输入有误");
 			}
 		}
+		//删除订单项(num为0)
+		rs.deleteOrderitem();
 		// 打印小票啦
 		v.println("");
 		v.println("\t\t亚惠餐厅");
@@ -272,6 +292,10 @@ public class Control {
 		v.println("折扣金额：" + (sum - actual));
 		v.println("应收金额：" + actual);
 		v.println("");
+		card ca= rs.selectCardById(or.getCarid());
+		if(ca.getBalance()<50) {
+			v.println("！！！你的卡内余额不足50，请尽快充值！！！");
+		}
 		v.println("----------------------------------------");
 	}
 	// 开卡的功能
@@ -311,10 +335,6 @@ public class Control {
 				v.println("解挂失败");
 			}
 		}
-		//		int i = ui.getInt("请输入卡号：");
-		//		card c= rs.selectCardById(i);
-		//		rs.loss(i, "冻结");
-		//		rs.openCard(new card(ui.getInt("请输入新卡号："), c.getEid(), c.getPayid(), c.getBalance(), "活跃"));
 	}
 	// 充值的功能
 	public void deposit() {
@@ -330,6 +350,22 @@ public class Control {
 		card c = rs.selectCardById(cid);
 		v.println("卡内余额："+c.getBalance());
 	}
+	// 修改密码
+	public void changePass() {
+		while(true) {
+			String pass1 = ui.getString("请输入新密码：");
+			String pass2 = ui.getString("请重新输入密码：");
+			if(pass1.equals(pass2)) {
+				emp.setPassword(pass1);
+				v.println(rs.updatePass(emp.getEid(),pass1));
+				break;
+			}else {
+				v.println("你两次输入的密码不一致");
+			}	
+		}
+	}
+
+
 
 	//1.添加员工
 	public void addEmp(){
@@ -508,6 +544,7 @@ public class Control {
 		}
 	}
 	//查看本月销售量
+	@SuppressWarnings("deprecation")
 	public void showMSalesVolume() {
 		double sum=0;
 		List<orderitem> list = rs.selectAllitem();
@@ -532,4 +569,95 @@ public class Control {
 		v.println("最受欢迎的菜是："+me.getMename());
 		v.println("销量是："+num);
 	}
+
+	//意见反馈
+	public void backview(){
+		//普通员工退出前输入客户提出的意见反馈给经理
+		String sview = ui.getString("请输入客户意见：");
+		PrintWriter pw=null;
+		try {
+			//写出到意见文本
+			pw=new PrintWriter(new OutputStreamWriter(new FileOutputStream("view.txt",true)));
+			pw.println(new SimpleDateFormat("yyyy-MM-dd").format(new Date())+":"+sview);
+			pw.flush();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}finally{
+			if(pw!=null)pw.close();
+		}
+	}
+	//经理接收意见
+	public void acceptView(){
+		//创建输入流
+		BufferedReader br=null;
+		try {
+			br=new BufferedReader(new InputStreamReader(new FileInputStream("view.txt"),"UTF-8"));
+			String s="";
+			String date = ui.getString("请输入日期：");
+			while((s=br.readLine())!=null){
+				String[] ss = s.split(":");
+				if(date.equals(ss[0])){
+					System.out.println(ss[1]);
+				}				
+			}
+			v.println("");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally{
+			try {
+				if(br!=null)br.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
+	//添加公告
+		public void addnotice(){
+			//普通员工退出前输入客户提出的意见反馈给经理
+			String snotice = ui.getString("请输入公告内容：");
+			PrintWriter pw=null;
+			try {
+				//写出到意见文本
+				pw=new PrintWriter(new OutputStreamWriter(new FileOutputStream("notice.txt",true)));
+				pw.println(new SimpleDateFormat("yyyy-MM-dd").format(new Date())+":"+snotice);
+				pw.flush();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}finally{
+				if(pw!=null)pw.close();
+			}
+		}
+		//员工查看公告
+		public void seenotice(){
+			//创建输入流
+			BufferedReader br=null;
+			try {
+				br=new BufferedReader(new InputStreamReader(new FileInputStream("notice.txt"),"UTF-8"));
+				v.println("公告内容为：");
+				String s="";
+				while((s=br.readLine())!=null){
+					v.println(s);				
+				}
+				v.println("");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}finally{
+				try {
+					if(br!=null)br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
 }

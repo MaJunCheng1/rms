@@ -89,4 +89,18 @@ public class empDaoImpl implements empDao {
 		return null;
 	}
 
+	//修改密码
+	public boolean updatePass(int eid,String newPass) {
+		db=new DBUtil();
+		String sql="update emp set password=? where eid=?";
+		try {
+			int i = this.db.update(sql,newPass,eid);
+			return i>0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}finally {
+			db.closed();
+		}
+	}
 }
