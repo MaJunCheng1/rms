@@ -6,7 +6,7 @@ public class View {
 		System.out.println(s);
 	}
 	public void welcom(){
-		System.out.println("**********欢迎来到亚惠餐厅**********");
+		System.out.println("**********欢迎来到亚惠餐厅*****************");
 		System.out.println();
 		System.out.println("*****请登录*****");
 	}
@@ -19,6 +19,7 @@ public class View {
 		System.out.println("4.解挂");
 		System.out.println("5.充值");
 		System.out.println("6.修改密码");
+		System.out.println("7.生成Execl表");
 		System.out.println("0.退出");
 	}
 	public void emone() {
@@ -47,6 +48,8 @@ public class View {
 		System.out.println("1.添加菜品");
 		System.out.println("2.删除菜品");
 		System.out.println("3.选择特价菜");
-		System.out.println("4.显示所有菜品");
+		System.out.println("4.取消特价菜");
+		System.out.println("5.显示所有菜品");
+		System.out.println("0.返回上一级");
 	}
 }

@@ -34,10 +34,14 @@ public class Control {
 	private static final String IP = "10.10.49.167";
 	//	private static final String IP = "localhost";
 	private static final int PORT = 5555;
+	//代理接口
 	private ReceptionService rs;
-
+	
+	//用于登录时获取员工信息
 	private employ emp;
+	//用于获取生成订单号
 	private String orid;
+	//用于获取菜单编号
 	private int carid;
 
 	// 构造方法
@@ -53,6 +57,7 @@ public class Control {
 			v.welcom();
 			employ em = rs.entry(ui.getString("请输入账号："), ui.getString("请输入密码："));
 			v.println("");
+			//账号密码输入错误时再次输入
 			if (em == null) {
 				System.out.println("账号密码错误");
 			} else if ("员工".equals(em.getJobtype())) {
@@ -129,16 +134,19 @@ public class Control {
 
 	// 点菜的功能
 	public void ordermenu() {
+		//生成订单号
 		String uid = UUID.randomUUID().toString().replace("-", "");
 		orid = uid;
 		Date d = new Date();
 		carid = ui.getInt("请输入卡号：");
+		//添加订单
 		rs.addOrders(new orders(uid, d, emp.getEid(), carid, ui.getInt("请输入地址编号：")));
-		//		String ortime = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		//获取菜单表
 		List<menu> list = rs.selectAllFood();
 		v.println(" ");
 		v.println("所有菜品如下：");
 		v.println("编号\t名称\t价格\t类型");
+		//循环遍历
 		for (menu m : list) {
 			String s = rs.findtypename(m.getTypeid());
 			System.out.println(m.getMeid() + "\t" + m.getMename() + "\t" + m.getMeprice() + "\t" + s);
@@ -148,6 +156,7 @@ public class Control {
 			v.emone();
 			while(true) {
 				int select2 = ui.getInt("请选择：");
+				//添加菜
 				if (select2 == 1) {
 					int meid = ui.getInt("请选择菜品编号：");
 					menu me = rs.selectFoodById(meid);
@@ -158,6 +167,7 @@ public class Control {
 					double num = ui.getDouble("请输入你要的份数：");
 					rs.addOrderitem(new orderitem(uid, meid, num));
 					break;
+					//删除菜
 				} else if (select2 == 2) {
 					int id = ui.getInt("请输入你要删除的菜品编号：");
 					double num2 = ui.getDouble("请输入份数：");
@@ -173,6 +183,7 @@ public class Control {
 						v.println("删除成功");
 					}
 					break;
+					//显示点的所有菜
 				} else if (select2 == 3) {
 					List<orderitem> list2 = rs.selectitem(uid);
 					System.out.println("编号\t名称\t价格\t数量");
@@ -190,11 +201,14 @@ public class Control {
 			v.println("3.取消订单");
 			while(true) {
 				int select3 = ui.getInt("请选择：");
+				//点菜时继续点菜时跳出这层循环,继续点菜
 				if (select3 == 1) {
 					break;
+				//提交订单,去结账并跳出标记为one的循环
 				} else if (select3 == 2) {
 					checkout();
 					break one;
+				//取消订单,删除该订单和订单项
 				} else if (select3 == 3) {
 					System.out.println("已取消订单");
 					rs.deleteOrders(uid);
@@ -212,14 +226,20 @@ public class Control {
 	public void checkout() {
 		@SuppressWarnings("unused")
 		String payname;
+		//获取所有订单号相同的订单项
 		List<orderitem> list = rs.selectitem(orid);
+		//找到你的所在地
 		orders or = rs.selectOrdersById(orid);
 		locate loc = rs.selectLocateById(or.getLocid());
+		
+		//没打折的钱
 		double sum = 0;
+		//打完折之后的钱
 		double actual;
 		while (true) {
 			sum = 0;
 			actual = 0;
+			//获取总消费金额
 			for (orderitem oi : list) {
 				menu me = rs.selectFoodById(oi.getMeid());
 				if ("是".equals(me.getIfspecials())) {
@@ -236,6 +256,7 @@ public class Control {
 				break;
 			} else if (i == 2) {
 				card c = rs.selectCardById(or.getCarid());
+				//卡冻结的话交易结束
 				if("冻结".equals(c.getStatus())) {
 					v.println("你的卡已被冻结,交易结束!");
 					rs.deleteOrders(orid);
@@ -248,6 +269,7 @@ public class Control {
 						payname = "普通会员";
 						actual = sum * 0.9;
 					}
+					//余额不足的话用现金支付
 					if((c.getBalance()-actual)<0) {
 						v.println("您的余额不足,请用现金支付!");
 					}else {
@@ -339,6 +361,7 @@ public class Control {
 	// 充值的功能
 	public void deposit() {
 		int cid = ui.getInt("请输入卡号：");
+		//获取当前日期
 		Calendar cal = Calendar.getInstance();
 		int d = cal.get(Calendar.DATE);
 		double balance = ui.getDouble("请输入你要充值的金额(28号冲200及以上赠50哦)：");
@@ -461,8 +484,14 @@ public class Control {
 				this.deletemenu();
 			}else if(i==3){
 				this.setSpexialMenu();
-			}else if(i==4){
+			}else if(i==4) {
+				this.cancelSpecial();
+			}else if(i==5){
 				this.showMenu();
+			}else if(i==0) {
+				break;
+			}else {
+				System.out.println("输入有误!!!!");
 			}
 		}
 	}
@@ -529,9 +558,39 @@ public class Control {
 			System.out.println(me.getMeid()+"\t"+me.getMename()+"\t"+me.getMeprice());
 		}
 		int a=ui.getInt("请输入要设置的特价菜编号：");
-		String s = rs.selectSpecial(a);
-		String s1 = rs.setSpecialMenu(a);
-		System.out.println(s+s1);
+		menu me = rs.selectFoodById(a);
+		if("是".equals(me.getIfspecials())) {
+			v.println("该菜本来就是特价菜！");
+		}else {
+			String s = rs.selectSpecial("是",a);
+			String s1 = rs.setSpecialMenu(rs.selectFoodById(a).getMeprice()*0.3,a);
+			System.out.println(s+s1);
+		}
+	}
+	//取消特价菜
+	public void cancelSpecial() {
+		v.println("");
+		List<vegetType> li = rs.showAllType();
+		System.out.println("类型编号\t类型名称");
+		//遍历输出菜品类型的编号和名称
+		for (vegetType ve : li) {
+			System.out.println(ve.getId()+"\t"+ve.getTypename());
+		}
+		List<menu> list = rs.selectFood(ui.getInt("请选择菜品类型编号："));
+		System.out.println("菜品ID\t菜品名称\t菜品单价");
+		for (menu me : list) {
+			System.out.println(me.getMeid()+"\t"+me.getMename()+"\t"+me.getMeprice());
+		}
+		int a=ui.getInt("请输入要取消的特价菜编号：");
+		menu me = rs.selectFoodById(a);
+		if("是".equals(me.getIfspecials())) {
+			String s = rs.selectSpecial("否",a);
+			String s1 = rs.setSpecialMenu(rs.selectFoodById(a).getMeprice()/0.3,a);
+			v.println("该菜已不是特价菜");
+		}else {
+			v.println("该菜本来就不是特价菜！");
+		}
+		
 	}
 	//查看菜单
 	public void showMenu(){
@@ -659,5 +718,13 @@ public class Control {
 				}
 			}
 		}
-
+		
+		
+		//生成Excel表
+		public void generateExcel() {
+			rs.generateMenuExcel();
+			rs.generateOrderExcel();
+			rs.generateTypeExcel();
+			v.println("Excel表已在E盘根目录下生成");
+		}
 }

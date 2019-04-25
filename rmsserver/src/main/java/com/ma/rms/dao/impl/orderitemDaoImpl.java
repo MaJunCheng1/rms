@@ -11,7 +11,7 @@ import com.ma.rms.util.DBUtil;
 
 public class orderitemDaoImpl implements orderitemDao {
 	private DBUtil db;
-	
+	// 添加订单项
 	public boolean addOrderitem(orderitem oi) {
 		db=new DBUtil();
 		String sql="insert into orderitem values(?,?,?)";
@@ -25,7 +25,7 @@ public class orderitemDaoImpl implements orderitemDao {
 			db.closed();
 		}
 	}
-
+	// 修改订单项
 	public boolean updateOrderitem(String orid, double num) {
 		db=new DBUtil();
 		String sql="update orderitem set num=num-"+num;
@@ -39,7 +39,7 @@ public class orderitemDaoImpl implements orderitemDao {
 			db.closed();
 		}
 	}
-
+	//删除订单项
 	public boolean deleteOrderitem() {
 		db=new DBUtil();
 		String sql="delete from orderitem where num=0";
@@ -54,7 +54,7 @@ public class orderitemDaoImpl implements orderitemDao {
 		}
 	}
 
-	
+	//删除订单项(一个)
 	public boolean deleteOneOrderitem(String orid, int meid) {
 		db=new DBUtil();
 		String sql="delete from orderitem where orid=? and meid=?";
@@ -68,7 +68,7 @@ public class orderitemDaoImpl implements orderitemDao {
 			db.closed();
 		}
 	}
-
+	// 通过orid查询订单项
 	public List<orderitem> selectitem(String orid) {
 		List<orderitem> list=new ArrayList<orderitem>();
 		db=new DBUtil();
@@ -86,7 +86,7 @@ public class orderitemDaoImpl implements orderitemDao {
 			db.closed();
 		}
 	}
-
+	// 通过orid和meid找订单项
 	public orderitem selectOrderByoridandmeid(String orid, int meid) {
 		db=new DBUtil();
 		String sql="select * from orderitem where orid=? and meid=?";

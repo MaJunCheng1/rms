@@ -11,6 +11,7 @@ import com.ma.rms.util.DBUtil;
 
 public class empDaoImpl implements empDao {
 	private DBUtil db;
+	// 添加员工信息
 	public boolean insertEmp(employ e) {
 		db=new DBUtil();
 		String sql="insert into emp values(?,?,?,?,?,?)";
@@ -24,7 +25,7 @@ public class empDaoImpl implements empDao {
 			this.db.closed();
 		}
 	}
-
+	// 删除员工信息
 	public boolean deleteEmp(int id) {
 		db=new DBUtil();
 		String sql="delete from emp where eid="+id;
@@ -38,7 +39,7 @@ public class empDaoImpl implements empDao {
 			this.db.closed();
 		}
 	}
-
+	// 查找所有员工信息
 	public List<employ> findAllEmp() {
 		db=new DBUtil();
 		String sql="select * from emp";
@@ -56,7 +57,7 @@ public class empDaoImpl implements empDao {
 			this.db.closed();
 		}
 	}
-
+	// 根据账号密码查询客户信息
 	public employ findOneEmp(String accout, String password) {
 		db=new DBUtil();
 		String sql="select * from emp where accout=? and password=?";
@@ -66,15 +67,14 @@ public class empDaoImpl implements empDao {
 				return new employ(rs.getInt("eid"),rs.getString("ename"),rs.getString("accout"),rs.getString("password"),rs.getString("jobtype"),rs.getString("sex"));
 			}	
 		} catch (SQLException e) {
-//			System.out.println(e.getMessage());
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 			return null;
 		}finally{
 			this.db.closed();
 		}
 		return null;
 	}
-
+	// 根据id查找员工
 	public employ findById(int id) {
 		db=new DBUtil();
 		String sql="select * from emp where eid="+id;

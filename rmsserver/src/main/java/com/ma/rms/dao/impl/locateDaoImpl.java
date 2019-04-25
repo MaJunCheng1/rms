@@ -9,6 +9,7 @@ import com.ma.rms.util.DBUtil;
 
 public class locateDaoImpl implements locateDao {
 	private DBUtil db;
+	//通过locid获取地址
 	public locate findLocate(int id) {
 		db=new DBUtil();
 		String sql="select * from locate where locid="+id;

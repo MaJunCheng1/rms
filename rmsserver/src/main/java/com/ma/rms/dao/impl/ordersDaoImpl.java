@@ -10,6 +10,7 @@ import com.ma.rms.util.DBUtil;
 
 public class ordersDaoImpl implements ordersDao{
 	private DBUtil db;
+	//添加订单的功能
 	public boolean insertOrders(orders o) {
 		db=new DBUtil();
 		String sql="insert into orders values(?,?,?,?,?)";
@@ -23,6 +24,7 @@ public class ordersDaoImpl implements ordersDao{
 			this.db.closed();
 		}
 	}
+	//根据orid查找订单
 	public orders selectOrdersById(String orid) {
 		db=new DBUtil();
 		String sql="select * from orders where orid=?";
@@ -39,6 +41,7 @@ public class ordersDaoImpl implements ordersDao{
 		}
 		return null;
 	}
+	//删除orders
 	public boolean deleteOrders(String orid) {
 		db=new DBUtil();
 		String sql="delete from orders where orid=?";

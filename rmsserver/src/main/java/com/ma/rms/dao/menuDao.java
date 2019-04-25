@@ -21,8 +21,9 @@ public interface menuDao {
 	//通过typeid查找typename
 	String findtypename(int typeid);
 	//选择特价菜
-	boolean selectSpecial(int id);
-	boolean setSpecial(int id);
+	boolean selectSpecial(String s,int id);
+	//修改价格
+	boolean setSpecial(double price,int id);
 	//显示所有菜的类型
 	List<vegetType> showVegeType();
 }

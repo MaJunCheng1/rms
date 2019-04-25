@@ -21,8 +21,8 @@ public interface menuBiz {
 	//通过typeid查找typename
 	String selecttypename(int typeid);
 	//选择特价菜
-	String selectSpecial(int id);
-	String setSpecial(int id);
+	String selectSpecial(String s,int id);
+	String setSpecial(double price,int id);
 	//显示所有菜
 	List<vegetType> showAllType();
 }

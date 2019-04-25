@@ -9,6 +9,7 @@ import com.ma.rms.util.DBUtil;
 
 public class cardDaoImpl implements cardDao {
 	private DBUtil db;
+	//添加卡
 	public boolean insertCard(card c) {
 		db=new DBUtil();
 		String sql="insert into card values(?,?,?,?,?)";
@@ -19,9 +20,11 @@ public class cardDaoImpl implements cardDao {
 			System.out.println(e.getMessage());
 			return false;
 		}finally{
+			//关闭流
 			this.db.closed();
 		}
 	}
+	//修改卡片余额(充值)
 	public boolean updateBalance(int carid, double balance) {
 		db=new DBUtil();
 		String sql="update card set balance=balance+? where carid=?";
@@ -35,7 +38,7 @@ public class cardDaoImpl implements cardDao {
 			this.db.closed();
 		}
 	}
-
+	//修改卡片状态(挂失,解挂,补卡)
 	public boolean updateStatus(int carid, String status) {
 		db=new DBUtil();
 		String sql="update card set status=? where carid=?";
@@ -49,7 +52,7 @@ public class cardDaoImpl implements cardDao {
 			this.db.closed();
 		}
 	}
-	
+	//根据卡的ID查找卡片信息
 	public card selectCardById(int carid) {
 		db=new DBUtil();
 		String sql="select * from card where carid="+carid;

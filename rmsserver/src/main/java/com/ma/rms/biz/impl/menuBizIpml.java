@@ -44,12 +44,12 @@ public class menuBizIpml implements menuBiz{
 		return mb.findtypename(typeid);
 	}
 
-	public String selectSpecial(int id) {
-		return mb.selectSpecial(id)?"已选择,":"未选中,";
+	public String selectSpecial(String s,int id) {
+		return mb.selectSpecial(s,id)?"已选择,":"未选中,";
 	}
 
-	public String setSpecial(int id) {
-		return mb.setSpecial(id)?"设置价格成功":"价格设置出错";
+	public String setSpecial(double price,int id) {
+		return mb.setSpecial(price,id)?"设置价格成功":"价格设置出错";
 	}
 
 	public List<vegetType> showAllType() {

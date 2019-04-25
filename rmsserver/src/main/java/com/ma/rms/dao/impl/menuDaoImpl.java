@@ -12,7 +12,7 @@ import com.ma.rms.util.DBUtil;
 
 public class menuDaoImpl implements menuDao{
 	private DBUtil db;
-	
+	//根据meid查找该菜的信息
 	public menu findFoodById(int meid) {
 		db=new DBUtil();
 		String sql="select * from menu where meid="+meid;
@@ -29,7 +29,7 @@ public class menuDaoImpl implements menuDao{
 		}
 		return null;
 	}
-
+	//查找所有菜的信息
 	public List<menu> findAllFood() {
 		List<menu> list=new ArrayList<menu>();
 		db=new DBUtil();
@@ -47,7 +47,7 @@ public class menuDaoImpl implements menuDao{
 			db.closed();
 		}
 	}
-
+	//增加菜品信息
 	public boolean insertFood(menu me) {
 		db=new DBUtil();
 		String sql="insert into menu values(?,?,?,?,?)";
@@ -61,7 +61,7 @@ public class menuDaoImpl implements menuDao{
 			db.closed();
 		}
 	}
-
+	//删除菜品
 	public boolean deleteFood(int meid) {
 		db=new DBUtil();
 		String sql="delete from menu where meid="+meid;
@@ -75,7 +75,7 @@ public class menuDaoImpl implements menuDao{
 			db.closed();
 		}
 	}
-
+	//修改菜品信息
 	public boolean updateFood(int meid,String mename,double meprice,int typeid,String ifspecials) {
 		db=new DBUtil();
 		String sql="update menu set mename=?,meprice=?,typeid=?,ifspecials=? where meid="+meid;
@@ -89,7 +89,7 @@ public class menuDaoImpl implements menuDao{
 			db.closed();
 		}
 	}
-
+	//通过typeid查找菜品信息
 	public List<menu> findFood(int typeid) {
 		List<menu> list=new ArrayList<menu>();
 		db=new DBUtil();
@@ -107,7 +107,7 @@ public class menuDaoImpl implements menuDao{
 			db.closed();
 		}
 	}
-
+	//通过typeid查找typename
 	public String findtypename(int typeid) {
 		db=new DBUtil();
 		String sql="select typename from vegetype where typeid="+typeid;
@@ -125,14 +125,12 @@ public class menuDaoImpl implements menuDao{
 		}
 	}
 	
-	
-	public boolean selectSpecial(int id) {
+	//选择特价菜
+	public boolean selectSpecial(String s,int id) {
 		db=new DBUtil();
-//		String sql="update set ifspecials='否'";
-		String sql2="update menu set ifspecials='是' where meid="+id;
+		String sql="update menu set ifspecials=? where meid="+id;
 		try {
-//			int i = db.update(sql);
-			int j = db.update(sql2);
+			int j = db.update(sql,s);
 			return j>0;
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -141,26 +139,21 @@ public class menuDaoImpl implements menuDao{
 			this.db.closed();
 		}
 	}
-
-	public boolean setSpecial(int id) {
+	//修改价格
+	public boolean setSpecial(double price,int id) {
 		db=new DBUtil();
-		String sql="select * from menu where meid="+id;
 		String sql2="update menu set meprice=? where meid="+id;
 		try {
-			ResultSet rs = db.qurey(sql);
-			if(rs.next()){
-				int i = db.update(sql2,rs.getDouble("meprice")*0.3);
+				int i = db.update(sql2,price);
 				return i>0;
-			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 			return false;
 		}finally{
 			this.db.closed();
 		}
-		return false;
 	}
-
+	//显示所有菜的类型
 	public List<vegetType> showVegeType() {
 		db=new DBUtil();
 		String sql="select * from vegetype";

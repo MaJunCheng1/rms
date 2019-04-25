@@ -86,9 +86,15 @@ public interface ReceptionService {
 	// 显示所有菜品
 	List<menu> showAllMenu();
 	// 选择特价菜
-	String selectSpecial(int id);
+	String selectSpecial(String s,int id);
 	// 设置特价菜价格
-	String setSpecialMenu(int id);
+	String setSpecialMenu(double price,int id);
 	//显示所有菜的类型
 	List<vegetType> showAllType();
+	//生成菜单表
+	public void generateMenuExcel();
+	//生成订单项表
+	public void generateOrderExcel();
+	//生成菜品种类表
+	public void generateTypeExcel();
 }
