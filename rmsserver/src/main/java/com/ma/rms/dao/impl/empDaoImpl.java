@@ -103,4 +103,18 @@ public class empDaoImpl implements empDao {
 			db.closed();
 		}
 	}
+	public employ selectEmpByAccount(String account) {
+		db=new DBUtil();
+		String sql="select * from emp where accout="+account;
+		try {
+			ResultSet rs = db.qurey(sql);
+			if(rs.next()) {
+				return new employ(rs.getInt("eid"),rs.getString("ename"),rs.getString("accout"),rs.getString("password"),rs.getString("jobtype"),rs.getString("sex"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

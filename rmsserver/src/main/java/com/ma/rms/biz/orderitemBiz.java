@@ -8,7 +8,7 @@ public interface orderitemBiz {
 	// 添加订单项
 	String insertOrderitem(orderitem oi);
 	// 修改订单项
-	String changeOrderitem(String orid, double num);
+	String changeOrderitem(String orid,int meid, double num);
 	//删除订单项
 	String removeOrderitem();
 	//删除订单项(一个)

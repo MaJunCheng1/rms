@@ -17,4 +17,6 @@ public interface empDao {
 	public employ findById(int id);
 	//修改密码
 	public boolean updatePass(int eid,String newPass);
+	//根据账号找到员工
+	public employ selectEmpByAccount(String account);
 }

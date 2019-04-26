@@ -17,4 +17,6 @@ public interface empBiz {
 	public employ findOneEmp(String accout,String password);
 	//修改密码
 	String changePass(int eid,String newPass);
+	//根据账号寻找员工
+	employ findEmpByAccount(String account);
 }

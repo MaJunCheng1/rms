@@ -19,8 +19,8 @@ public class orderitemBizImpl implements orderitemBiz {
 		return od.addOrderitem(oi)?"添加成功":"添加失败";
 	}
 
-	public String changeOrderitem(String orid, double num) {
-		return od.updateOrderitem(orid, num)?"已从购物车里删除":"修改失败";
+	public String changeOrderitem(String orid, int meid,double num) {
+		return od.updateOrderitem(orid,meid, num)?"修改成功":"修改失败";
 	}
 
 	public String removeOrderitem() {

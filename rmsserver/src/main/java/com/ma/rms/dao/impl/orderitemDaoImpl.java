@@ -26,11 +26,11 @@ public class orderitemDaoImpl implements orderitemDao {
 		}
 	}
 	// 修改订单项
-	public boolean updateOrderitem(String orid, double num) {
+	public boolean updateOrderitem(String orid,int meid, double num) {
 		db=new DBUtil();
-		String sql="update orderitem set num=num-"+num;
+		String sql="update orderitem set num=num-? where orid=? and meid=?";
 		try {
-			int i = db.update(sql);
+			int i = db.update(sql,num,orid,meid);
 			return i>0;
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());

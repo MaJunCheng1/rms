@@ -32,8 +32,8 @@ public interface ReceptionService {
 
 	// 添加订单项
 	String addOrderitem(orderitem oi);
-	// 修改订单项,并删除num小于定于0的菜
-	String updateOrderitem(String orid, double num);
+	// 修改订单项
+	String updateOrderitem(String orid,int meid, double num);
 	// 删除订单项
 	String deleteOrderitem();
 	//删除订单项(一个)
@@ -97,4 +97,6 @@ public interface ReceptionService {
 	public void generateOrderExcel();
 	//生成菜品种类表
 	public void generateTypeExcel();
+	//根据账号寻找员工
+	employ	selectEmpByAccount(String account);
 }

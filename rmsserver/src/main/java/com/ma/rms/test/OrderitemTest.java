@@ -18,7 +18,7 @@ public class OrderitemTest {
 //	@Test
 	public void updateOrderitem() {
 		orderitemDao od=new orderitemDaoImpl();
-		boolean b = od.updateOrderitem("ba14d6e472454deebb0f01f4cce300d0", 1);
+		boolean b = od.updateOrderitem("ba14d6e472454deebb0f01f4cce300d0", 1,1);
 		System.out.println(b);
 	}
 //	@Test

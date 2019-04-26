@@ -8,7 +8,8 @@ public class View {
 	public void welcom(){
 		System.out.println("**********欢迎来到亚惠餐厅*****************");
 		System.out.println();
-		System.out.println("*****请登录*****");
+		System.out.println("*****1.登录*****");
+		System.out.println("*****2.忘记密码*****");
 	}
 	public void employ(){
 		System.out.println("**********欢迎来到亚惠餐厅员工界面**********");

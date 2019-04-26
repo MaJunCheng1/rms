@@ -25,29 +25,35 @@ import com.ma.rms.domain.orders;
 import com.ma.rms.domain.vegetType;
 import com.ma.rms.service.ReceptionService;
 import com.ma.rms.util.UserInput;
+import com.ma.rms.util.generateCode;
 import com.ma.rms.view.View;
 
 public class Control {
 	// 属性
 	private UserInput ui;
+	private generateCode gc;
 	private View v;
-	private static final String IP = "10.10.49.167";
-	//	private static final String IP = "localhost";
+//		private static final String IP = "10.10.49.67";
+	private static final String IP = "localhost";
+	
 	private static final int PORT = 5555;
 	//代理接口
 	private ReceptionService rs;
-	
+
 	//用于登录时获取员工信息
 	private employ emp;
 	//用于获取生成订单号
 	private String orid;
 	//用于获取菜单编号
 	private int carid;
+	//获取邮箱
+	private String mail;
 
 	// 构造方法
 	public Control() {
 		this.ui = new UserInput();
 		this.v = new View();
+		this.gc=new generateCode();
 		// 创建代理对象
 		rs = ProxyClient.getClient(ReceptionService.class, IP, PORT);
 	}
@@ -55,79 +61,127 @@ public class Control {
 	public void start() {
 		while (true) {
 			v.welcom();
-			employ em = rs.entry(ui.getString("请输入账号："), ui.getString("请输入密码："));
-			v.println("");
-			//账号密码输入错误时再次输入
-			if (em == null) {
-				System.out.println("账号密码错误");
-			} else if ("员工".equals(em.getJobtype())) {
-				emp = em;
-				v.println("欢迎员工" + em.getEname());
+			int ii = ui.getInt("请选择：");
+			if(ii==1) {
+				employ em = rs.entry(ui.getString("请输入账号："), ui.getString("请输入密码："));
 				v.println("");
-				this.seenotice();
-				while (true) {
-					v.employ();
-					int select = ui.getInt("请选择：");
-					if (select == 1) {
-						this.ordermenu();
-						v.println("");
-					} else if (select == 2) {
-						opencard();
-						v.println("");
-					} else if (select == 3) {
-						loss();
-						v.println("");
-					} else if (select == 4) {
-						jieGua();
-						v.println("");
-					} else if (select == 5) {
-						deposit();
-						v.println("");
-					}else if(select==6) {
-						changePass();
-						v.println("");
-					}else if(select == 0) {
-						this.backview();
-						v.println("欢迎本次使用");
-						System.exit(0);
-					}else {
-						System.out.println("输入有误!!!!");
-						v.println("");
+				//账号密码输入错误时再次输入
+				if (em == null) {
+					System.out.println("账号密码错误");
+				} else if ("员工".equals(em.getJobtype())) {
+					emp = em;
+					v.println("欢迎员工" + em.getEname());
+					v.println("");
+					this.seenotice();
+					while (true) {
+						v.employ();
+						int select = ui.getInt("请选择：");
+						if (select == 1) {
+							this.ordermenu();
+							v.println("");
+						} else if (select == 2) {
+							opencard();
+							v.println("");
+						} else if (select == 3) {
+							loss();
+							v.println("");
+						} else if (select == 4) {
+							jieGua();
+							v.println("");
+						} else if (select == 5) {
+							deposit();
+							v.println("");
+						}else if(select==6) {
+							changePass();
+							v.println("");
+						}else if(select==7) {
+							this.generateExcel();
+							v.println("");
+						}else if(select == 0) {
+							this.backview();
+							v.println("欢迎本次使用");
+							System.exit(0);
+						}else {
+							System.out.println("输入有误!!!!");
+							v.println("");
+						}
+					}
+				} else if ("经理".equals(em.getJobtype())) {
+					emp = em;
+					v.println("欢迎" + em.getEname()+"经理");
+					while(true){
+						v.manager();
+						int select=ui.getInt("请选择：");
+						if(select==1){
+							this.addEmp();
+						}else if(select==2){
+							this.deleteEmp();
+						}else if(select==3){
+							this.newCard();
+						}else if(select==4){
+							this.coldCard();
+						}else if(select==5){
+							this.vegeManage();
+						}else if(select==6) {
+							showMSalesVolume();
+						}else if(select==7) {
+							mostFood();
+						}else if(select==8) {
+							this.acceptView();
+						}else if(select==9) {
+							this.changePass();
+						}else if(select==10) {
+							this.addnotice();
+						}else if(select==0) {
+							v.println("欢迎本次使用");
+							System.exit(0);
+						}else{
+							System.err.println("请输入有效的选项！！！");
+						}
 					}
 				}
-			} else if ("经理".equals(em.getJobtype())) {
-				emp = em;
-				v.println("欢迎" + em.getEname()+"经理");
-				while(true){
-					v.manager();
-					int select=ui.getInt("请选择：");
-					if(select==1){
-						this.addEmp();
-					}else if(select==2){
-						this.deleteEmp();
-					}else if(select==3){
-						this.newCard();
-					}else if(select==4){
-						this.coldCard();
-					}else if(select==5){
-						this.vegeManage();
-					}else if(select==6) {
-						showMSalesVolume();
-					}else if(select==7) {
-						mostFood();
-					}else if(select==8) {
-						this.acceptView();
-					}else if(select==9) {
-						this.changePass();
-					}else if(select==10) {
-						this.addnotice();
-					}else if(select==0) {
-						v.println("欢迎本次使用");
-						System.exit(0);
-					}else{
-						System.err.println("请输入有效的选项！！！");
+			}else if(ii==2) {
+				one: while(true) {
+					String account = ui.getString("请输入账号：");
+					employ em = rs.selectEmpByAccount(account);
+					if(em==null) {
+						v.println("没有该账号");
+					}else {	
+						while(true) {
+							String to_email = ui.getString("请输入你的邮箱地址：");
+							//向邮箱发送验证码
+							String verificationCode = gc.sendMail(to_email);
+							mail=verificationCode;
+							if(verificationCode==null) {
+								v.println("没有该邮箱！");
+
+							}else {
+								break;
+							}
+						}
+						while(true) {
+							String code = ui.getString("请输入你收到的验证码：");
+							if(code.equals(mail)) {
+								v.println("验证通过！");
+								while(true) {
+									String newPass = ui.getString("请输入新密码：");
+									String pass = ui.getString("请再次输入密码：");
+									if(newPass.equals(pass)) {
+										rs.updatePass(em.getEid(), newPass);
+										v.println("密码修改成功！");
+										break one;
+									}else {
+										v.println("两次密码输入不一致！");
+									}
+								}
+							}else {
+								v.println("验证码错误！");
+							}
+						}
 					}
 				}
+			}else {
+				v.println("输入有误！");
 			}
 		}
 	}
@@ -176,7 +230,7 @@ public class Control {
 						v.println("购物车里没有该菜品!");
 					}else {
 						if ((oi.getNum() - num2) > 0) {
-							rs.updateOrderitem(uid, num2);
+							rs.updateOrderitem(uid,id, num2);
 						} else {
 							rs.deleteOneOrderitem(uid, id);
 						}
@@ -204,11 +258,11 @@ public class Control {
 				//点菜时继续点菜时跳出这层循环,继续点菜
 				if (select3 == 1) {
 					break;
-				//提交订单,去结账并跳出标记为one的循环
+					//提交订单,去结账并跳出标记为one的循环
 				} else if (select3 == 2) {
 					checkout();
 					break one;
-				//取消订单,删除该订单和订单项
+					//取消订单,删除该订单和订单项
 				} else if (select3 == 3) {
 					System.out.println("已取消订单");
 					rs.deleteOrders(uid);
@@ -231,7 +285,7 @@ public class Control {
 		//找到你的所在地
 		orders or = rs.selectOrdersById(orid);
 		locate loc = rs.selectLocateById(or.getLocid());
-		
+
 		//没打折的钱
 		double sum = 0;
 		//打完折之后的钱
@@ -334,13 +388,17 @@ public class Control {
 	public void loss() {
 		int carid = ui.getInt("请输入卡号：");
 		card c = rs.selectCardById(carid);
-		if("冻结".equals(c.getStatus())) {
-			System.out.println("该卡已经是冻结状态!");
+		if(c==null) {
+			v.println("该卡不存在！");
 		}else {
-			if(rs.loss(carid, "冻结")) {
-				v.println("挂失成功,已冻结该卡!!");
+			if("冻结".equals(c.getStatus())) {
+				System.out.println("该卡已经是冻结状态!");
 			}else {
-				v.println("挂失失败");
+				if(rs.loss(carid, "冻结")) {
+					v.println("挂失成功,已冻结该卡!!");
+				}else {
+					v.println("挂失失败");
+				}
 			}
 		}
 	}
@@ -348,13 +406,17 @@ public class Control {
 	public void jieGua() {
 		int carid = ui.getInt("请输入卡号：");
 		card c = rs.selectCardById(carid);
-		if("活跃".equals(c.getStatus())) {
-			System.out.println("该卡已经是活跃状态!");
+		if(c==null) {
+			v.println("该卡不存在！");
 		}else {
-			if(rs.loss(carid, "活跃")) {
-				v.println("解挂成功,已将该卡解除冻结!!");
+			if("活跃".equals(c.getStatus())) {
+				System.out.println("该卡已经是活跃状态!");
 			}else {
-				v.println("解挂失败");
+				if(rs.loss(carid, "活跃")) {
+					v.println("解挂成功,已将该卡解除冻结!!");
+				}else {
+					v.println("解挂失败");
+				}
 			}
 		}
 	}
@@ -520,12 +582,13 @@ public class Control {
 			}
 			int typeid= ui.getInt("请输入菜所属的类型编号：");
 			String is= ui.getString("请输入是否是特价菜：");
-			if(!is.equals("男")&&!is.equals("女")){
+			if(!is.equals("是")&&!is.equals("否")){
 				System.err.println("请输入是或否！");
 				break;
 			}
 			String s = this.rs.addMenu(new menu(i,name,price,typeid,is));
 			System.out.println(s);
+			break;
 		}		
 	}
 	//删除菜品
@@ -577,20 +640,20 @@ public class Control {
 			System.out.println(ve.getId()+"\t"+ve.getTypename());
 		}
 		List<menu> list = rs.selectFood(ui.getInt("请选择菜品类型编号："));
-		System.out.println("菜品ID\t菜品名称\t菜品单价");
+		System.out.println("菜品ID\t菜品名称\t菜品单价\t是否是特价菜");
 		for (menu me : list) {
-			System.out.println(me.getMeid()+"\t"+me.getMename()+"\t"+me.getMeprice());
+			System.out.println(me.getMeid()+"\t"+me.getMename()+"\t"+me.getMeprice()+"\t"+me.getIfspecials());
 		}
 		int a=ui.getInt("请输入要取消的特价菜编号：");
 		menu me = rs.selectFoodById(a);
-		if("是".equals(me.getIfspecials())) {
+		if("否".equals(me.getIfspecials())) {
+			v.println("该菜本来就不是特价菜！");
+		}else {
 			String s = rs.selectSpecial("否",a);
 			String s1 = rs.setSpecialMenu(rs.selectFoodById(a).getMeprice()/0.3,a);
-			v.println("该菜已不是特价菜");
-		}else {
-			v.println("该菜本来就不是特价菜！");
+			v.println("已修改");
 		}
-		
+
 	}
 	//查看菜单
 	public void showMenu(){
@@ -674,57 +737,57 @@ public class Control {
 			}
 		}
 	}
-	
-	
+
+
 	//添加公告
-		public void addnotice(){
-			//普通员工退出前输入客户提出的意见反馈给经理
-			String snotice = ui.getString("请输入公告内容：");
-			PrintWriter pw=null;
-			try {
-				//写出到意见文本
-				pw=new PrintWriter(new OutputStreamWriter(new FileOutputStream("notice.txt",true)));
-				pw.println(new SimpleDateFormat("yyyy-MM-dd").format(new Date())+":"+snotice);
-				pw.flush();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}finally{
-				if(pw!=null)pw.close();
-			}
+	public void addnotice(){
+		//普通员工退出前输入客户提出的意见反馈给经理
+		String snotice = ui.getString("请输入公告内容：");
+		PrintWriter pw=null;
+		try {
+			//写出到意见文本
+			pw=new PrintWriter(new OutputStreamWriter(new FileOutputStream("notice.txt",true)));
+			pw.println(new SimpleDateFormat("yyyy-MM-dd").format(new Date())+":"+snotice);
+			pw.flush();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}finally{
+			if(pw!=null)pw.close();
 		}
-		//员工查看公告
-		public void seenotice(){
-			//创建输入流
-			BufferedReader br=null;
+	}
+	//员工查看公告
+	public void seenotice(){
+		//创建输入流
+		BufferedReader br=null;
+		try {
+			br=new BufferedReader(new InputStreamReader(new FileInputStream("notice.txt"),"UTF-8"));
+			v.println("公告内容为：");
+			String s="";
+			while((s=br.readLine())!=null){
+				v.println(s);				
+			}
+			v.println("");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally{
 			try {
-				br=new BufferedReader(new InputStreamReader(new FileInputStream("notice.txt"),"UTF-8"));
-				v.println("公告内容为：");
-				String s="";
-				while((s=br.readLine())!=null){
-					v.println(s);				
-				}
-				v.println("");
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				if(br!=null)br.close();
 			} catch (IOException e) {
 				e.printStackTrace();
-			}finally{
-				try {
-					if(br!=null)br.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
 			}
 		}
-		
-		
-		//生成Excel表
-		public void generateExcel() {
-			rs.generateMenuExcel();
-			rs.generateOrderExcel();
-			rs.generateTypeExcel();
-			v.println("Excel表已在E盘根目录下生成");
-		}
+	}
+
+
+	//生成Excel表
+	public void generateExcel() {
+		rs.generateMenuExcel();
+		rs.generateOrderExcel();
+		rs.generateTypeExcel();
+		v.println("Excel表已在E盘根目录下生成");
+	}
 }

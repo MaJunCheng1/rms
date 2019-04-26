@@ -34,5 +34,10 @@ public class empBizImpl implements empBiz {
 	//修改密码
 	public String changePass(int eid,String newPass) {
 		return this.ed.updatePass(eid,newPass)?"修改成功":"修改失败";
-	};
+	}
+	//根据账号找员工
+	public employ findEmpByAccount(String account) {
+		return ed.selectEmpByAccount(account);
+		
+	}
 }

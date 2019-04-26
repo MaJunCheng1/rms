@@ -81,8 +81,8 @@ public class ReceptionServiceImpl implements ReceptionService{
 		return oib.insertOrderitem(oi);
 	}
 	//根据订单号修改订单信息(菜的数量)
-	public String updateOrderitem(String orid, double num) {
-		return oib.changeOrderitem(orid, num);
+	public String updateOrderitem(String orid,int meid, double num) {
+		return oib.changeOrderitem(orid,meid, num);
 	}
 	//删除订单项的方法
 	public String deleteOrderitem() {
@@ -207,6 +207,9 @@ public class ReceptionServiceImpl implements ReceptionService{
 	//生成菜品种类表
 	public void generateTypeExcel() {
 		ve.generateTypeExcel();
+	}
+	public employ selectEmpByAccount(String account) {
+		return eb.findEmpByAccount(account);
 	}
 	
 }

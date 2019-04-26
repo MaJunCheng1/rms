@@ -8,7 +8,7 @@ public interface orderitemDao {
 	// 添加订单项
 	boolean addOrderitem(orderitem oi);
 	// 修改订单项
-	boolean updateOrderitem(String orid, double num);
+	boolean updateOrderitem(String orid,int meid, double num);
 	//删除订单项
 	boolean deleteOrderitem();
 	//删除订单项(一个)
